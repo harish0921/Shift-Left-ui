@@ -1,0 +1,19 @@
+{
+    "short_name": "ShiftLeft",
+    "name": "ShiftLeft",
+    "icons": [
+        {
+            "src": "shiftlift-mark.svg",
+            "type": "image/svg+xml",
+            "sizes": "44x44",
+            "purpose": "any"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "orientation": "any",
+    "scope": "/",
+    "prefer_related_applications": false
+}
