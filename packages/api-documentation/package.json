@@ -1,5 +1,5 @@
 {
-    "name": "flowise-api",
+    "name": "shiftleft-api",
     "version": "1.0.3",
     "description": "Flowise API documentation server",
     "scripts": {

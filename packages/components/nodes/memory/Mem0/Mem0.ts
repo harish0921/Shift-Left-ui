@@ -56,7 +56,7 @@ class Mem0_Memory implements INode {
                 name: 'user_id',
                 type: 'string',
                 description: 'Unique identifier for the user. Required only if "Use Flowise Chat ID" is OFF.',
-                default: 'flowise-default-user',
+                default: 'shiftleft-default-user',
                 optional: true
             },
             // Added toggle to use Flowise chat ID
@@ -175,7 +175,7 @@ const initializeMem0 = async (nodeData: INodeData, input: string, options: IComm
 
     const memOptionsUserId = initialUserId
 
-    const constructorSessionId = initialUserId || (useFlowiseChatId ? 'flowise-chat-id-placeholder' : '')
+    const constructorSessionId = initialUserId || (useFlowiseChatId ? 'shiftleft-chat-id-placeholder' : '')
 
     const memoryOptions: MemoryOptions & SearchOptions = {
         user_id: memOptionsUserId,

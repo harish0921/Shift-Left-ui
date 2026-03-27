@@ -10,7 +10,7 @@ import {
     removeSpecificFileFromStorage,
     isValidUUID,
     isPathTraversal
-} from 'shiftlift-components'
+} from 'shiftleftai-components'
 import { getRunningExpressApp } from './getRunningExpressApp'
 import { validateFileMimeTypeAndExtensionMatch } from './fileValidation'
 import logger from './logger'

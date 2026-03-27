@@ -23,11 +23,17 @@ const createAssistant = async (req: Request, res: Response, next: NextFunction) 
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.createAssistant - workspace ${workspaceId} not found!`
-            )
+        let resolvedWorkspaceId = workspaceId
+        if (!resolvedWorkspaceId) {
+            const fallbackWorkspace = await getRunningExpressApp()
+                .AppDataSource.getRepository('workspace')
+                .createQueryBuilder('workspace')
+                .orderBy('workspace.createdDate', 'ASC')
+                .getOne()
+            resolvedWorkspaceId = fallbackWorkspace?.id
+        }
+        if (!resolvedWorkspaceId) {
+            throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Error: assistantsController.createAssistant - no workspace found!`)
         }
         const subscriptionId = req.user?.activeOrganizationSubscriptionId || ''
 
@@ -35,7 +41,7 @@ const createAssistant = async (req: Request, res: Response, next: NextFunction) 
         const newAssistantCount = 1
         await checkUsageLimit('flows', subscriptionId, getRunningExpressApp().usageCacheManager, existingAssistantCount + newAssistantCount)
 
-        body.workspaceId = workspaceId
+        body.workspaceId = resolvedWorkspaceId
         const apiResponse = await assistantsService.createAssistant(body, orgId)
 
         return res.json(apiResponse)
@@ -52,13 +58,6 @@ const deleteAssistant = async (req: Request, res: Response, next: NextFunction) 
                 `Error: assistantsController.deleteAssistant - id not provided!`
             )
         }
-        const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.deleteAssistant - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await assistantsService.deleteAssistant(req.params.id, req.query.isDeleteBoth, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -70,12 +69,6 @@ const getAllAssistants = async (req: Request, res: Response, next: NextFunction)
     try {
         const type = req.query.type as AssistantType
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.getAllAssistants - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await assistantsService.getAllAssistants(workspaceId, type)
         return res.json(apiResponse)
     } catch (error) {
@@ -92,12 +85,6 @@ const getAssistantById = async (req: Request, res: Response, next: NextFunction)
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.getAssistantById - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await assistantsService.getAssistantById(req.params.id, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -120,12 +107,6 @@ const updateAssistant = async (req: Request, res: Response, next: NextFunction) 
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.updateAssistant - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await assistantsService.updateAssistant(req.params.id, req.body, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -145,12 +126,6 @@ const getChatModels = async (req: Request, res: Response, next: NextFunction) =>
 const getDocumentStores = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: assistantsController.getDocumentStores - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await assistantsService.getDocumentStores(workspaceId)
         return res.json(apiResponse)
     } catch (error) {

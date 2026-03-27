@@ -14,7 +14,7 @@ let appDataSource: DataSource
 
 export const init = async (): Promise<void> => {
     let homePath
-    let shiftliftPath = path.join(getUserHome(), '.shiftlift')
+    let shiftliftPath = path.join(getUserHome(), '.shiftleftai')
     if (!fs.existsSync(shiftliftPath)) {
         fs.mkdirSync(shiftliftPath)
     }

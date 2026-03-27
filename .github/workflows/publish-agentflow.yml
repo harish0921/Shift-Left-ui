@@ -1,4 +1,4 @@
-name: Publish @flowiseai/agentflow
+name: Publish @shiftleftai/agentflow
 on:
     workflow_dispatch:
         inputs:
@@ -84,10 +84,10 @@ jobs:
                   echo "## Tag: \`${{ inputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
 
             - name: Package contents
-              run: pnpm --filter @flowiseai/agentflow pack --dry-run
+              run: pnpm --filter @shiftleftai/agentflow pack --dry-run
 
             - name: Dry run publish
-              run: pnpm --filter @flowiseai/agentflow publish --no-git-checks --dry-run --tag ${{ inputs.tag }}
+              run: pnpm --filter @shiftleftai/agentflow publish --no-git-checks --dry-run --tag ${{ inputs.tag }}
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -135,7 +135,7 @@ jobs:
                   echo "Tag: ${{ inputs.tag }}"
 
             - name: Publish
-              run: pnpm --filter @flowiseai/agentflow publish --no-git-checks --tag ${{ inputs.tag }}
+              run: pnpm --filter @shiftleftai/agentflow publish --no-git-checks --tag ${{ inputs.tag }}
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -147,11 +147,11 @@ jobs:
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git checkout -b "$BRANCH"
                   git add packages/agentflow/package.json
-                  git commit -m "chore: bump @flowiseai/agentflow to ${VERSION}"
+                  git commit -m "chore: bump @shiftleftai/agentflow to ${VERSION}"
                   git push -u origin "$BRANCH"
                   gh pr create \
-                    --title "chore: bump @flowiseai/agentflow to ${VERSION}" \
-                    --body "Automated version bump after publishing \`@flowiseai/agentflow@${VERSION}\` to npm with tag \`${{ inputs.tag }}\`." \
+                    --title "chore: bump @shiftleftai/agentflow to ${VERSION}" \
+                    --body "Automated version bump after publishing \`@shiftleftai/agentflow@${VERSION}\` to npm with tag \`${{ inputs.tag }}\`." \
                     --base main \
                     --head "$BRANCH"
               env:

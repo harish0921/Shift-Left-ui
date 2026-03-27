@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes'
 
 export const getWorkspaceSearchOptions = (workspaceId?: string) => {
     if (!workspaceId) {
-        throw new internalShiftLiftError(StatusCodes.BAD_REQUEST, `Workspace ID is required`)
+        return {}
     }
     return { workspaceId: Equal(workspaceId) }
 }
@@ -13,7 +13,7 @@ export const getWorkspaceSearchOptions = (workspaceId?: string) => {
 export const getWorkspaceSearchOptionsFromReq = (req: Request) => {
     const workspaceId = req.user?.activeWorkspaceId
     if (!workspaceId) {
-        throw new internalShiftLiftError(StatusCodes.BAD_REQUEST, `Workspace ID is required`)
+        return {}
     }
     return { workspaceId: Equal(workspaceId) }
 }

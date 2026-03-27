@@ -1,5 +1,5 @@
 import evaluatorsService from '../evaluator'
-import { ICommonObject } from 'shiftlift-components'
+import { ICommonObject } from 'shiftleftai-components'
 
 interface EvaluatorReturnType {
     name: string

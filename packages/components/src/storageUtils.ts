@@ -50,7 +50,7 @@ export const getFilesListFromStorage = async (...paths: string[]): Promise<FileI
 export const getStoragePath = (): string => {
     const storagePath = process.env.BLOB_STORAGE_PATH
         ? path.join(process.env.BLOB_STORAGE_PATH)
-        : path.join(getUserHome(), '.flowise', 'storage')
+        : path.join(getUserHome(), '.shiftleft', 'storage')
     if (!fs.existsSync(storagePath)) {
         fs.mkdirSync(storagePath, { recursive: true })
     }

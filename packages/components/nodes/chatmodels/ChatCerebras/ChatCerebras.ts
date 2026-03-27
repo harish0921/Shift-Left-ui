@@ -171,7 +171,7 @@ class ChatCerebras_ChatModels implements INode {
 
         // Add integration tracking header and configure endpoint
         const integrationHeader = {
-            'X-Cerebras-3rd-Party-Integration': 'flowise'
+            'X-Cerebras-3rd-Party-Integration': 'shiftleft'
         }
 
         obj.configuration = {

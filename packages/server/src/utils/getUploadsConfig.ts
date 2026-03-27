@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { INodeParams } from 'shiftlift-components'
+import { INodeParams } from 'shiftleftai-components'
 import { ChatFlow } from '../database/entities/ChatFlow'
 import { getRunningExpressApp } from '../utils/getRunningExpressApp'
 import { IUploadFileSizeAndTypes, IReactFlowNode, IReactFlowEdge } from '../Interface'

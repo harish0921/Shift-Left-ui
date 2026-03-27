@@ -60,7 +60,7 @@ body:
           options:
               - Flowise Cloud
               - Docker
-              - npx flowise start
+              - npx shiftleft start
               - pnpm start
 
     - type: input

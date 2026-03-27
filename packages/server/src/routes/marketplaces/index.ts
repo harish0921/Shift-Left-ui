@@ -5,6 +5,8 @@ const router = express.Router()
 
 // READ
 router.get('/templates', checkPermission('templates:marketplace'), marketplacesController.getAllTemplates)
+router.get('/chatflows', checkPermission('templates:marketplace'), marketplacesController.getAllTemplates)
+router.get('/tools', checkPermission('templates:marketplace'), marketplacesController.getAllTemplates)
 
 router.post('/custom', checkAnyPermission('templates:flowexport,templates:toolexport'), marketplacesController.saveCustomTemplate)
 

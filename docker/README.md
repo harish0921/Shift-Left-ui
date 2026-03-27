@@ -13,12 +13,12 @@ Starts shift left  from the Docker image configured in this folder's compose fil
 
 If you want to persist your data (flows, logs, credentials, storage), set these variables in the `.env` file inside the `docker` folder:
 
--   DATABASE_PATH=/root/.flowise
--   LOG_PATH=/root/.flowise/logs
--   SECRETKEY_PATH=/root/.flowise
--   BLOB_STORAGE_PATH=/root/.flowise/storage
+-   DATABASE_PATH=/root/.shiftleft
+-   LOG_PATH=/root/.shiftleft/logs
+-   SECRETKEY_PATH=/root/.shiftleft
+-   BLOB_STORAGE_PATH=/root/.shiftleft/storage
 
-shift left  also supports environment variables to configure your instance. See `https://docs.shiftlift.ai/configuration/environment-variables`.
+shift left  also supports environment variables to configure your instance. See `https://docs.shiftleftai.ai/configuration/environment-variables`.
 
 ## Queue Mode
 

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { JsonInput } from './JsonInput'
 
 // Mock ReactJson
-jest.mock('flowise-react-json-view', () => {
+jest.mock('shiftleft-react-json-view', () => {
     const MockReactJson = (props: {
         src: object
         theme?: string

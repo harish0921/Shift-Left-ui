@@ -312,13 +312,13 @@ function AgentflowCanvas({
  *
  * @example
  * ```tsx
- * import { Agentflow } from '@flowiseai/agentflow'
- * import '@flowiseai/agentflow/flowise.css'
+ * import { Agentflow } from '@shiftleftai/agentflow'
+ * import '@shiftleftai/agentflow/shiftleft.css'
  *
  * function App() {
  *   return (
  *     <Agentflow
- *       apiBaseUrl="https://flowise-url.com"
+ *       apiBaseUrl="https://shiftleft-url.com"
  *       token="your-auth-token"
  *       components={['agentAgentflow', 'llmAgentflow']}
  *     />

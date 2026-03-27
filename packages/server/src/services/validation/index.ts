@@ -3,7 +3,7 @@ import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'
 import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { ChatFlow } from '../../database/entities/ChatFlow'
-import { INodeParams } from 'shiftlift-components'
+import { INodeParams } from 'shiftleftai-components'
 import { IReactFlowEdge, IReactFlowNode } from '../../Interface'
 
 interface IValidationResult {

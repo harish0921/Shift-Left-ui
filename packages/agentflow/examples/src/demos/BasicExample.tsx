@@ -1,14 +1,14 @@
 /**
  * Basic Example
  *
- * Demonstrates basic @flowiseai/agentflow usage with imperative methods,
+ * Demonstrates basic @shiftleftai/agentflow usage with imperative methods,
  * onFlowChange tracking, and save flow functionality.
  */
 
 import { useCallback, useRef, useState } from 'react'
 
-import type { AgentFlowInstance, FlowData, ValidationResult } from '@flowiseai/agentflow'
-import { Agentflow } from '@flowiseai/agentflow'
+import type { AgentFlowInstance, FlowData, ValidationResult } from '@shiftleftai/agentflow'
+import { Agentflow } from '@shiftleftai/agentflow'
 import { InternalAxiosRequestConfig } from 'axios'
 
 import { apiBaseUrl, token } from '../config'

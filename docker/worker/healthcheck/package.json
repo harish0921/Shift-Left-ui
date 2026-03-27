@@ -1,5 +1,5 @@
 {
-    "name": "flowise-worker-healthcheck",
+    "name": "shiftleft-worker-healthcheck",
     "version": "1.0.0",
     "description": "Simple healthcheck server for shift left  worker",
     "main": "healthcheck.js",

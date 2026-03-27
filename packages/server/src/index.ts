@@ -4,7 +4,6 @@ import cors from 'cors'
 import express, { Request, Response } from 'express'
 import 'global-agent/bootstrap'
 import http from 'http'
-import path from 'path'
 import { DataSource } from 'typeorm'
 import { AbortControllerPool } from './AbortControllerPool'
 import { CachePool } from './CachePool'
@@ -12,6 +11,7 @@ import { ChatFlow } from './database/entities/ChatFlow'
 import { getDataSource } from './DataSource'
 import { Organization } from './enterprise/database/entities/organization.entity'
 import { Workspace } from './enterprise/database/entities/workspace.entity'
+import { User, UserStatus } from './enterprise/database/entities/user.entity'
 import { LoggedInUser } from './enterprise/Interface.Enterprise'
 import { initializeJwtCookieMiddleware, verifyToken, verifyTokenForBullMQDashboard } from './enterprise/middleware/passport'
 import { initAuthSecrets } from './enterprise/utils/authSecrets'
@@ -26,14 +26,15 @@ import { QueueManager } from './queue/QueueManager'
 import { RedisEventSubscriber } from './queue/RedisEventSubscriber'
 import shiftliftApiV1Router from './routes'
 import { UsageCacheManager } from './UsageCacheManager'
-import { getEncryptionKey, getNodeModulesPackagePath } from './utils'
+import { getEncryptionKey } from './utils'
 import { API_KEY_BLACKLIST_URLS, WHITELIST_URLS } from './utils/constants'
 import logger, { expressRequestLogger } from './utils/logger'
 import { RateLimiterManager } from './utils/rateLimit'
 import { SSEStreamer } from './utils/SSEStreamer'
 import { Telemetry } from './utils/telemetry'
 import { validateAPIKey } from './utils/validateKey'
-import { getAllowedIframeOrigins, getCorsOptions, sanitizeMiddleware } from './utils/XSS'
+import { getAllowedIframeOrigins, sanitizeMiddleware } from './utils/XSS'
+import { v4 as uuidv4 } from 'uuid'
 
 declare global {
     namespace Express {
@@ -179,7 +180,17 @@ export class App {
         this.app.set('trust proxy', trustProxy)
 
         // Allow access from specified domains
-        this.app.use(cors(getCorsOptions()))
+        const allowedOrigins = ['http://localhost:8080', 'http://localhost:3000', process.env.CORS_ORIGIN || '*']
+        this.app.use(
+            cors({
+                credentials: true,
+                origin: (origin, callback) => {
+                    if (!origin) return callback(null, true)
+                    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) return callback(null, true)
+                    return callback(null, false)
+                }
+            })
+        )
 
         // Parse cookies
         this.app.use(cookieParser())
@@ -216,7 +227,66 @@ export class App {
             // Local/dev auth bypass. Keep disabled in production.
             if (process.env.DISABLE_AUTH === 'true') {
                 if (!req.user) {
-                    const workspace = await this.AppDataSource.getRepository(Workspace).createQueryBuilder('workspace').orderBy('workspace.createdDate', 'ASC').getOne()
+                    req.user = {
+                        id: 'local-dev-user',
+                        name: 'Local Dev',
+                        email: 'local@localhost',
+                        permissions: [],
+                        features: {},
+                        activeOrganizationId: '',
+                        activeOrganizationSubscriptionId: '',
+                        activeOrganizationCustomerId: '',
+                        activeOrganizationProductId: '',
+                        isOrganizationAdmin: true,
+                        activeWorkspaceId: '',
+                        activeWorkspace: ''
+                    }
+
+                    let workspace = await this.AppDataSource.getRepository(Workspace)
+                        .createQueryBuilder('workspace')
+                        .orderBy('workspace.createdDate', 'ASC')
+                        .getOne()
+
+                    // Auto-bootstrap local dev workspace when database is empty.
+                    if (!workspace) {
+                        let localUser = await this.AppDataSource.getRepository(User)
+                            .createQueryBuilder('user')
+                            .orderBy('user.createdDate', 'ASC')
+                            .getOne()
+                        if (!localUser) {
+                            const localUserId = uuidv4()
+                            localUser = this.AppDataSource.getRepository(User).create({
+                                id: localUserId,
+                                name: 'Local Dev',
+                                email: 'local@localhost',
+                                status: UserStatus.ACTIVE,
+                                createdBy: localUserId,
+                                updatedBy: localUserId
+                            })
+                            localUser = await this.AppDataSource.getRepository(User).save(localUser)
+                        }
+
+                        let localOrg = await this.AppDataSource.getRepository(Organization)
+                            .createQueryBuilder('organization')
+                            .orderBy('organization.createdDate', 'ASC')
+                            .getOne()
+                        if (!localOrg) {
+                            localOrg = this.AppDataSource.getRepository(Organization).create({
+                                name: 'Default Organization',
+                                createdBy: localUser.id,
+                                updatedBy: localUser.id
+                            })
+                            localOrg = await this.AppDataSource.getRepository(Organization).save(localOrg)
+                        }
+
+                        workspace = this.AppDataSource.getRepository(Workspace).create({
+                            name: 'Default Workspace',
+                            organizationId: localOrg.id,
+                            createdBy: localUser.id,
+                            updatedBy: localUser.id
+                        })
+                        workspace = await this.AppDataSource.getRepository(Workspace).save(workspace)
+                    }
 
                     if (workspace) {
                         const org = await this.AppDataSource.getRepository(Organization).findOne({
@@ -347,7 +417,7 @@ export class App {
         this.app.get('/api/v1/ip', (request, response) => {
             response.send({
                 ip: request.ip,
-                msg: 'Check returned IP address in the response. If it matches your current IP address ( which you can get by going to http://ip.nfriedly.com/ or https://api.ipify.org/ ), then the number of proxies is correct and the rate limiter should now work correctly. If not, increase the number of proxies by 1 and restart shift left  Cloud Hosting until the IP address matches your own. Visit https://docs.shiftlift.ai/configuration/rate-limit#cloud-hosted-rate-limit-setup-guide for more information.'
+                msg: 'Check returned IP address in the response. If it matches your current IP address ( which you can get by going to http://ip.nfriedly.com/ or https://api.ipify.org/ ), then the number of proxies is correct and the rate limiter should now work correctly. If not, increase the number of proxies by 1 and restart shift left  Cloud Hosting until the IP address matches your own. Visit https://docs.shiftleftai.ai/configuration/rate-limit#cloud-hosted-rate-limit-setup-guide for more information.'
             })
         })
 
@@ -365,19 +435,9 @@ export class App {
             this.app.use('/admin/queues', rateLimiter, verifyTokenForBullMQDashboard, this.queueManager.getBullBoardRouter())
         }
 
-        // ----------------------------------------
-        // Serve UI static
-        // ----------------------------------------
-
-        const packagePath = getNodeModulesPackagePath('shiftlift-ui')
-        const uiBuildPath = path.join(packagePath, 'build')
-        const uiHtmlPath = path.join(packagePath, 'build', 'index.html')
-
-        this.app.use('/', express.static(uiBuildPath))
-
-        // All other requests not handled will return React app
+        // All other requests not handled will return JSON 404
         this.app.use((req: Request, res: Response) => {
-            res.sendFile(uiHtmlPath)
+            res.status(404).json({ error: 'Not found' })
         })
 
         // Error handling

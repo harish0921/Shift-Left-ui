@@ -1,6 +1,6 @@
-# @flowiseai/agentflow - Architecture
+# @shiftleftai/agentflow - Architecture
 
-This document describes the internal architecture of the `@flowiseai/agentflow` package.
+This document describes the internal architecture of the `@shiftleftai/agentflow` package.
 
 ## Overview
 

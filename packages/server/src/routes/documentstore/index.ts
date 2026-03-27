@@ -13,6 +13,7 @@ router.post(['/refresh/', '/refresh/:id'], documentStoreController.refreshDocSto
 // Create document store
 router.post('/store', checkPermission('documentStores:create'), documentStoreController.createDocumentStore)
 // List all stores
+router.get('/', checkPermission('documentStores:view'), documentStoreController.getAllDocumentStores)
 router.get('/store', checkPermission('documentStores:view'), documentStoreController.getAllDocumentStores)
 // Get specific store
 router.get(

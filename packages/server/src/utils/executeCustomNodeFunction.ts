@@ -1,4 +1,4 @@
-import { handleEscapeCharacters, ICommonObject } from 'shiftlift-components'
+import { handleEscapeCharacters, ICommonObject } from 'shiftleftai-components'
 import { databaseEntities } from '.'
 import { internalShiftLiftError } from '../errors/internalShiftLiftError'
 import { StatusCodes } from 'http-status-codes'

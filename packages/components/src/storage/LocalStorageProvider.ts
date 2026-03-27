@@ -343,7 +343,7 @@ export class LocalStorageProvider extends BaseStorageProvider {
     private getUploadPath(): string {
         return process.env.BLOB_STORAGE_PATH
             ? path.join(process.env.BLOB_STORAGE_PATH, 'uploads')
-            : path.join(this.getUserHome(), '.flowise', 'uploads')
+            : path.join(this.getUserHome(), '.shiftleft', 'uploads')
     }
 
     private getUserHome(): string {
@@ -351,7 +351,7 @@ export class LocalStorageProvider extends BaseStorageProvider {
     }
 
     getLoggerTransports(logType: 'server' | 'error' | 'requests', config?: any): any[] {
-        const logDir = config?.logging?.dir || path.join(this.getUserHome(), '.flowise', 'logs')
+        const logDir = config?.logging?.dir || path.join(this.getUserHome(), '.shiftleft', 'logs')
 
         if (!fs.existsSync(logDir)) {
             fs.mkdirSync(logDir, { recursive: true })

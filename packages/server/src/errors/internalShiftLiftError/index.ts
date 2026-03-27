@@ -7,3 +7,6 @@ export class InternalShiftLiftError extends Error {
         Error.captureStackTrace(this, this.constructor)
     }
 }
+
+// Backward-compatible export used across older imports.
+export const internalShiftLiftError = InternalShiftLiftError

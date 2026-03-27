@@ -1,5 +1,5 @@
 {
-    "name": "shiftlift-components",
+    "name": "shiftleftai-components",
     "version": "3.1.1",
     "description": "shift left  Components",
     "main": "dist/src/index",
@@ -14,10 +14,10 @@
         "test:coverage": "jest --coverage"
     },
     "keywords": [],
-    "homepage": "https://shiftlift.ai",
+    "homepage": "https://shiftleftai.ai",
     "author": {
         "name": "Henry Heng",
-        "email": "support@shiftlift.ai"
+        "email": "support@shiftleftai.ai"
     },
     "license": "SEE LICENSE IN LICENSE.md",
     "dependencies": {
@@ -36,7 +36,7 @@
         "@e2b/code-interpreter": "^1.5.1",
         "@elastic/elasticsearch": "^8.9.0",
         "@elevenlabs/elevenlabs-js": "^2.8.0",
-        "@shiftlift/nodevm": "npm:@flowiseai/nodevm@^3.9.25",
+        "@shiftleftai/nodevm": "npm:@shiftleftai/nodevm@^3.9.25",
         "@getzep/zep-cloud": "~1.0.7",
         "@getzep/zep-js": "^0.9.0",
         "@gomomento/sdk": "^1.51.1",

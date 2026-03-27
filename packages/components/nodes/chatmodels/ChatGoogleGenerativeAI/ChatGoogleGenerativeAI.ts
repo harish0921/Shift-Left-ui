@@ -80,7 +80,7 @@ class GoogleGenerativeAI_ChatModels implements INode {
                 name: 'allowImageUploads',
                 type: 'boolean',
                 description:
-                    'Allow image input. Refer to the <a href="https://docs.flowiseai.com/using-flowise/uploads#image" target="_blank">docs</a> for more details.',
+                    'Allow image input. Refer to the <a href="https://docs.shiftleftai.com/using-shiftleft/uploads#image" target="_blank">docs</a> for more details.',
                 default: false,
                 optional: true
             },

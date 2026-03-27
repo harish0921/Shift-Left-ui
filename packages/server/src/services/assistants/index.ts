@@ -1,4 +1,4 @@
-import { extractResponseContent, ICommonObject } from 'shiftlift-components'
+import { extractResponseContent, ICommonObject } from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep, isEqual, uniqWith } from 'lodash'
 import OpenAI from 'openai'
@@ -160,12 +160,12 @@ const createAssistant = async (requestBody: any, orgId: string): Promise<Assista
     }
 }
 
-const deleteAssistant = async (assistantId: string, isDeleteBoth: any, workspaceId: string): Promise<DeleteResult> => {
+const deleteAssistant = async (assistantId: string, isDeleteBoth: any, workspaceId?: string): Promise<DeleteResult> => {
     try {
         const appServer = getRunningExpressApp()
         const assistant = await appServer.AppDataSource.getRepository(Assistant).findOneBy({
             id: assistantId,
-            workspaceId: workspaceId
+            ...getWorkspaceSearchOptions(workspaceId)
         })
         if (!assistant) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Assistant ${assistantId} not found`)
@@ -226,7 +226,7 @@ async function getAssistantsCountByOrganization(type: AssistantType, organizatio
     }
 }
 
-const getAllAssistants = async (workspaceId: string, type?: AssistantType): Promise<Assistant[]> => {
+const getAllAssistants = async (workspaceId?: string, type?: AssistantType): Promise<Assistant[]> => {
     try {
         const appServer = getRunningExpressApp()
         if (type) {
@@ -246,7 +246,7 @@ const getAllAssistants = async (workspaceId: string, type?: AssistantType): Prom
     }
 }
 
-const getAllAssistantsCount = async (workspaceId: string, type?: AssistantType): Promise<number> => {
+const getAllAssistantsCount = async (workspaceId?: string, type?: AssistantType): Promise<number> => {
     try {
         const appServer = getRunningExpressApp()
         if (type) {
@@ -266,12 +266,12 @@ const getAllAssistantsCount = async (workspaceId: string, type?: AssistantType):
     }
 }
 
-const getAssistantById = async (assistantId: string, workspaceId: string): Promise<Assistant> => {
+const getAssistantById = async (assistantId: string, workspaceId?: string): Promise<Assistant> => {
     try {
         const appServer = getRunningExpressApp()
         const dbResponse = await appServer.AppDataSource.getRepository(Assistant).findOneBy({
             id: assistantId,
-            workspaceId: workspaceId
+            ...getWorkspaceSearchOptions(workspaceId)
         })
         if (!dbResponse) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Assistant ${assistantId} not found`)
@@ -285,12 +285,12 @@ const getAssistantById = async (assistantId: string, workspaceId: string): Promi
     }
 }
 
-const updateAssistant = async (assistantId: string, requestBody: any, workspaceId: string): Promise<Assistant> => {
+const updateAssistant = async (assistantId: string, requestBody: any, workspaceId?: string): Promise<Assistant> => {
     try {
         const appServer = getRunningExpressApp()
         const assistant = await appServer.AppDataSource.getRepository(Assistant).findOneBy({
             id: assistantId,
-            workspaceId: workspaceId
+            ...getWorkspaceSearchOptions(workspaceId)
         })
 
         if (!assistant) {
@@ -464,7 +464,7 @@ const getChatModels = async (): Promise<any> => {
     }
 }
 
-const getDocumentStores = async (activeWorkspaceId: string): Promise<any> => {
+const getDocumentStores = async (activeWorkspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
         const stores = await appServer.AppDataSource.getRepository(DocumentStore).findBy(getWorkspaceSearchOptions(activeWorkspaceId))

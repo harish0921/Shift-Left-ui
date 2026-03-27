@@ -31,10 +31,12 @@ const createCredential = async (requestBody: any) => {
 }
 
 // Delete all credentials from chatflowid
-const deleteCredentials = async (credentialId: string, workspaceId: string): Promise<any> => {
+const deleteCredentials = async (credentialId: string, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Credential).delete({ id: credentialId, workspaceId: workspaceId })
+        const dbResponse = await appServer.AppDataSource.getRepository(Credential).delete(
+            workspaceId ? { id: credentialId, workspaceId } : { id: credentialId }
+        )
         if (!dbResponse) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Credential ${credentialId} not found`)
         }
@@ -47,7 +49,7 @@ const deleteCredentials = async (credentialId: string, workspaceId: string): Pro
     }
 }
 
-const getAllCredentials = async (paramCredentialName: any, workspaceId: string) => {
+const getAllCredentials = async (paramCredentialName: any, workspaceId?: string) => {
     try {
         const appServer = getRunningExpressApp()
         let dbResponse: any[] = []
@@ -57,7 +59,7 @@ const getAllCredentials = async (paramCredentialName: any, workspaceId: string) 
                     const name = paramCredentialName[i] as string
                     const searchOptions = {
                         credentialName: name,
-                        ...getWorkspaceSearchOptions(workspaceId)
+                        ...(workspaceId ? getWorkspaceSearchOptions(workspaceId) : {})
                     }
                     const credentials = await appServer.AppDataSource.getRepository(Credential).findBy(searchOptions)
                     dbResponse.push(...credentials.map((c) => omit(c, ['encryptedData'])))
@@ -65,7 +67,7 @@ const getAllCredentials = async (paramCredentialName: any, workspaceId: string) 
             } else {
                 const searchOptions = {
                     credentialName: paramCredentialName,
-                    ...getWorkspaceSearchOptions(workspaceId)
+                    ...(workspaceId ? getWorkspaceSearchOptions(workspaceId) : {})
                 }
                 const credentials = await appServer.AppDataSource.getRepository(Credential).findBy(searchOptions)
                 dbResponse = credentials.map((c) => omit(c, ['encryptedData']))
@@ -97,7 +99,9 @@ const getAllCredentials = async (paramCredentialName: any, workspaceId: string) 
                 }
             }
         } else {
-            const credentials = await appServer.AppDataSource.getRepository(Credential).findBy(getWorkspaceSearchOptions(workspaceId))
+            const credentials = await appServer.AppDataSource.getRepository(Credential).findBy(
+                workspaceId ? getWorkspaceSearchOptions(workspaceId) : {}
+            )
             for (const credential of credentials) {
                 dbResponse.push(omit(credential, ['encryptedData']))
             }
@@ -124,12 +128,14 @@ const getAllCredentials = async (paramCredentialName: any, workspaceId: string) 
     }
 }
 
-const getCredentialById = async (credentialId: string, workspaceId: string): Promise<any> => {
+const getCredentialById = async (credentialId: string, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const credential = await appServer.AppDataSource.getRepository(Credential).findOneBy({
-            id: credentialId,
-            workspaceId: workspaceId
+        const credential = await appServer.AppDataSource.getRepository(Credential).findOne({
+            where: {
+                id: credentialId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!credential) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Credential ${credentialId} not found`)
@@ -166,12 +172,14 @@ const getCredentialById = async (credentialId: string, workspaceId: string): Pro
     }
 }
 
-const updateCredential = async (credentialId: string, requestBody: any, workspaceId: string): Promise<any> => {
+const updateCredential = async (credentialId: string, requestBody: any, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const credential = await appServer.AppDataSource.getRepository(Credential).findOneBy({
-            id: credentialId,
-            workspaceId: workspaceId
+        const credential = await appServer.AppDataSource.getRepository(Credential).findOne({
+            where: {
+                id: credentialId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!credential) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Credential ${credentialId} not found`)
@@ -179,7 +187,7 @@ const updateCredential = async (credentialId: string, requestBody: any, workspac
         const decryptedCredentialData = await decryptCredentialData(credential.encryptedData)
         requestBody.plainDataObj = { ...decryptedCredentialData, ...requestBody.plainDataObj }
         const updateCredential = await transformToCredentialEntity(requestBody)
-        updateCredential.workspaceId = workspaceId
+        if (workspaceId) updateCredential.workspaceId = workspaceId
         await appServer.AppDataSource.getRepository(Credential).merge(credential, updateCredential)
         const dbResponse = await appServer.AppDataSource.getRepository(Credential).save(credential)
         return dbResponse

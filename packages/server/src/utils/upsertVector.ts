@@ -6,7 +6,7 @@ import {
     mapExtToInputField,
     mapMimeTypeToInputField,
     removeSpecificFileFromUpload
-} from 'shiftlift-components'
+} from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep, omit } from 'lodash'
 import * as path from 'path'

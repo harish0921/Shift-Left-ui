@@ -203,7 +203,7 @@ const DeleteDocStoreDialog = ({ show, dialogProps, onCancel, onDelete }) => {
                             document store. The actual vector embeddings in your vector store database will remain unchanged. To enable
                             automatic cleanup of vector store data, please configure a Record Manager.{' '}
                             <Link
-                                href='https://docs.shiftlift.ai/integrations/langchain/record-managers'
+                                href='https://docs.shiftleftai.ai/integrations/langchain/record-managers'
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 sx={{ fontWeight: 500, color: '#005A9E', textDecoration: 'underline' }}

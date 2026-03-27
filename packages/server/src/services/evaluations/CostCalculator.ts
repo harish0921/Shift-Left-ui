@@ -1,4 +1,4 @@
-import { ICommonObject } from 'shiftlift-components'
+import { ICommonObject } from 'shiftleftai-components'
 
 // fractionDigits is the number of digits after the decimal point, for display purposes
 const fractionDigits = 2

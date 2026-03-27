@@ -12,7 +12,7 @@ const createCredential = async (req: Request, res: Response, next: NextFunction)
             )
         }
         const body = req.body
-        body.workspaceId = req.user?.activeWorkspaceId
+        if (req.user?.activeWorkspaceId) body.workspaceId = req.user.activeWorkspaceId
         const apiResponse = await credentialsService.createCredential(body)
         return res.json(apiResponse)
     } catch (error) {
@@ -29,12 +29,6 @@ const deleteCredentials = async (req: Request, res: Response, next: NextFunction
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: credentialsController.deleteCredentials - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await credentialsService.deleteCredentials(req.params.id, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -45,12 +39,6 @@ const deleteCredentials = async (req: Request, res: Response, next: NextFunction
 const getAllCredentials = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: credentialsController.getAllCredentials - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await credentialsService.getAllCredentials(req.query.credentialName, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -67,12 +55,6 @@ const getCredentialById = async (req: Request, res: Response, next: NextFunction
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: credentialsController.getCredentialById - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await credentialsService.getCredentialById(req.params.id, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -95,12 +77,6 @@ const updateCredential = async (req: Request, res: Response, next: NextFunction)
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: credentialsController.updateCredential - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await credentialsService.updateCredential(req.params.id, req.body, workspaceId)
         return res.json(apiResponse)
     } catch (error) {

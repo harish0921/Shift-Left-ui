@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { IServerSideEventStreamer } from 'shiftlift-components'
+import { IServerSideEventStreamer } from 'shiftleftai-components'
 
 // define a new type that has a client type (INTERNAL or EXTERNAL) and Response type
 type Client = {

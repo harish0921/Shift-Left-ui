@@ -186,7 +186,7 @@ class ExecuteFlow_Agentflow implements INode {
 
             let headers: Record<string, string> = {
                 'Content-Type': 'application/json',
-                'flowise-tool': 'true'
+                'shiftleft-tool': 'true'
             }
             if (chatflowApiKey) headers = { ...headers, Authorization: `Bearer ${chatflowApiKey}` }
 

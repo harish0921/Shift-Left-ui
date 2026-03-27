@@ -1,6 +1,6 @@
 import path from 'path'
 import { NextFunction, Request, Response } from 'express'
-import { getFilesListFromStorage, getStoragePath, removeSpecificFileFromStorage } from 'shiftlift-components'
+import { getFilesListFromStorage, getStoragePath, removeSpecificFileFromStorage } from 'shiftleftai-components'
 import { updateStorageUsage } from '../../utils/quotaUsage'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { StatusCodes } from 'http-status-codes'

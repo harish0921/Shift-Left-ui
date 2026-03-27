@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 import contentDisposition from 'content-disposition'
-import { isUnsafeFilePath, isValidUUID, streamStorageFile } from 'shiftlift-components'
+import { isUnsafeFilePath, isValidUUID, streamStorageFile } from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getRunningExpressApp } from '../../utils/getRunningExpressApp'

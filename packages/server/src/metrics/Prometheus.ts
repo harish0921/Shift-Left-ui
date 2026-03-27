@@ -1,7 +1,7 @@
 import { SHIFTLIFT_METRIC_COUNTERS, IMetricsProvider } from '../Interface.Metrics'
 import express from 'express'
 import promClient, { Counter, Histogram, Registry } from 'prom-client'
-import { getVersion } from 'shiftlift-components'
+import { getVersion } from 'shiftleftai-components'
 
 export class Prometheus implements IMetricsProvider {
     private app: express.Application

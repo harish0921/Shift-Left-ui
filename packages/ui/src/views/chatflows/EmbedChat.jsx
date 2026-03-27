@@ -40,7 +40,7 @@ function a11yProps(index) {
 
 const embedPopupHtmlCode = (chatflowid) => {
     return `<script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftlift-embed/dist/web.js"
+    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftleftai-embed/dist/web.js"
     Chatbot.init({
         chatflowid: "${chatflowid}",
         apiHost: "${baseURL}",
@@ -49,7 +49,7 @@ const embedPopupHtmlCode = (chatflowid) => {
 }
 
 const embedPopupReactCode = (chatflowid) => {
-    return `import { BubbleChat } from 'shiftlift-embed-react'
+    return `import { BubbleChat } from 'shiftleftai-embed-react'
 
 const App = () => {
     return (
@@ -62,9 +62,9 @@ const App = () => {
 }
 
 const embedFullpageHtmlCode = (chatflowid) => {
-    return `<flowise-fullchatbot></flowise-fullchatbot>
+    return `<shiftleft-fullchatbot></shiftleft-fullchatbot>
 <script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftlift-embed/dist/web.js"
+    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftleftai-embed/dist/web.js"
     Chatbot.initFull({
         chatflowid: "${chatflowid}",
         apiHost: "${baseURL}",
@@ -73,7 +73,7 @@ const embedFullpageHtmlCode = (chatflowid) => {
 }
 
 const embedFullpageReactCode = (chatflowid) => {
-    return `import { FullPageChat } from "shiftlift-embed-react"
+    return `import { FullPageChat } from "shiftleftai-embed-react"
 
 const App = () => {
     return (
@@ -109,7 +109,7 @@ export const defaultThemeConfig = {
     },
     disclaimer: {
         title: 'Disclaimer',
-        message: 'By using this chatbot, you agree to the <a target="_blank" href="https://shiftlift.ai/terms">Terms & Condition</a>',
+        message: 'By using this chatbot, you agree to the <a target="_blank" href="https://shiftleftai.ai/terms">Terms & Condition</a>',
         textColor: 'black',
         buttonColor: '#3b82f6',
         buttonText: 'Start Chatting',
@@ -171,7 +171,7 @@ export const defaultThemeConfig = {
             textColor: '#303235',
             text: 'Powered by',
             company: 'shift left ',
-            companyLink: 'https://shiftlift.ai'
+            companyLink: 'https://shiftleftai.ai'
         }
     }
 }
@@ -193,7 +193,7 @@ const customStringify = (obj) => {
 
 const embedPopupHtmlCodeCustomization = (chatflowid) => {
     return `<script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftlift-embed/dist/web.js"
+    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftleftai-embed/dist/web.js"
     Chatbot.init({
         chatflowid: "${chatflowid}",
         apiHost: "${baseURL}",
@@ -209,7 +209,7 @@ const embedPopupHtmlCodeCustomization = (chatflowid) => {
 }
 
 const embedPopupReactCodeCustomization = (chatflowid) => {
-    return `import { BubbleChat } from 'shiftlift-embed-react'
+    return `import { BubbleChat } from 'shiftleftai-embed-react'
 
 const App = () => {
     return (
@@ -244,9 +244,9 @@ const getFullPageThemeConfig = () => {
 }
 
 const embedFullpageHtmlCodeCustomization = (chatflowid) => {
-    return `<flowise-fullchatbot></flowise-fullchatbot>
+    return `<shiftleft-fullchatbot></shiftleft-fullchatbot>
 <script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftlift-embed/dist/web.js"
+    import Chatbot from "https://cdn.jsdelivr.net/npm/shiftleftai-embed/dist/web.js"
     Chatbot.initFull({
         chatflowid: "${chatflowid}",
         apiHost: "${baseURL}",
@@ -262,7 +262,7 @@ const embedFullpageHtmlCodeCustomization = (chatflowid) => {
 }
 
 const embedFullpageReactCodeCustomization = (chatflowid) => {
-    return `import { FullPageChat } from 'shiftlift-embed-react'
+    return `import { FullPageChat } from 'shiftleftai-embed-react'
 
 const App = () => {
     return (
@@ -351,11 +351,11 @@ const EmbedChat = ({ chatflowid }) => {
                                     <a
                                         rel='noreferrer'
                                         target='_blank'
-                                        href='https://www.npmjs.com/package/shiftlift-embed?activeTab=versions'
+                                        href='https://www.npmjs.com/package/shiftleftai-embed?activeTab=versions'
                                     >
                                         version
                                     </a>
-                                    :&nbsp;<code>{`https://cdn.jsdelivr.net/npm/shiftlift-embed@<version>/dist/web.js`}</code>
+                                    :&nbsp;<code>{`https://cdn.jsdelivr.net/npm/shiftleftai-embed@<version>/dist/web.js`}</code>
                                 </p>
                             </span>
                             <div style={{ height: 10 }}></div>

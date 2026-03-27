@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { convertTextToSpeechStream } from 'shiftlift-components'
+import { convertTextToSpeechStream } from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import chatflowsService from '../../services/chatflows'

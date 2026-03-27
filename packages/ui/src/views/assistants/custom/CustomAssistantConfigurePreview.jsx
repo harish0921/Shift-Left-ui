@@ -2,7 +2,6 @@ import { cloneDeep, set } from 'lodash'
 import { memo, useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { FullPageChat } from 'shiftlift-embed-react'
 import PropTypes from 'prop-types'
 
 // Hooks
@@ -63,7 +62,7 @@ import { toolAgentFlow } from './toolAgentFlow'
 const MemoizedFullPageChat = memo(
     ({ ...props }) => (
         <div>
-            <FullPageChat {...props}></FullPageChat>
+            <LazyFullPageChat {...props}></LazyFullPageChat>
         </div>
     ),
     (prevProps, nextProps) => prevProps.chatflow === nextProps.chatflow
@@ -72,6 +71,58 @@ const MemoizedFullPageChat = memo(
 MemoizedFullPageChat.displayName = 'MemoizedFullPageChat'
 
 MemoizedFullPageChat.propTypes = {
+    chatflow: PropTypes.object
+}
+
+const LazyFullPageChat = ({ ...props }) => {
+    const [EmbedFullPageChat, setEmbedFullPageChat] = useState(null)
+
+    useEffect(() => {
+        let isMounted = true
+
+        const loadEmbedComponent = async () => {
+            try {
+                const packageName = 'shiftleftai-embed-react'
+                const pkg = await import(/* @vite-ignore */ packageName)
+                if (isMounted && pkg?.FullPageChat) {
+                    setEmbedFullPageChat(() => pkg.FullPageChat)
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setEmbedFullPageChat(null)
+                }
+            }
+        }
+
+        loadEmbedComponent()
+
+        return () => {
+            isMounted = false
+        }
+    }, [])
+
+    if (!EmbedFullPageChat) {
+        return (
+            <Box
+                sx={{
+                    p: 3,
+                    border: 1,
+                    borderColor: 'divider',
+                    borderRadius: 2,
+                    bgcolor: 'background.paper'
+                }}
+            >
+                <Typography variant='body2' color='text.secondary'>
+                    Assistant preview is unavailable because `shiftleftai-embed-react` is not installed.
+                </Typography>
+            </Box>
+        )
+    }
+
+    return <EmbedFullPageChat {...props} />
+}
+
+LazyFullPageChat.propTypes = {
     chatflow: PropTypes.object
 }
 

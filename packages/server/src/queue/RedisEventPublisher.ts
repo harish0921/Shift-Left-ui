@@ -1,4 +1,4 @@
-import { IServerSideEventStreamer } from 'shiftlift-components'
+import { IServerSideEventStreamer } from 'shiftleftai-components'
 import { createClient } from 'redis'
 import logger from '../utils/logger'
 

@@ -1,6 +1,6 @@
 import { ChatFlow } from '../database/entities/ChatFlow'
 import { IReactFlowObject } from '../Interface'
-import { addBase64FilesToStorage } from 'shiftlift-components'
+import { addBase64FilesToStorage } from 'shiftleftai-components'
 import { checkStorage, updateStorageUsage } from './quotaUsage'
 import { UsageCacheManager } from '../UsageCacheManager'
 

@@ -1,4 +1,4 @@
-import { isValidUUID } from 'shiftlift-components'
+import { isValidUUID } from 'shiftleftai-components'
 import chatflowsService from '../services/chatflows'
 import logger from './logger'
 

@@ -3,7 +3,7 @@ import { Resource } from '@opentelemetry/resources'
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions'
 import { MeterProvider, PeriodicExportingMetricReader, Histogram } from '@opentelemetry/sdk-metrics'
 import { diag, DiagLogLevel, DiagConsoleLogger, Attributes, Counter } from '@opentelemetry/api'
-import { getVersion } from 'shiftlift-components'
+import { getVersion } from 'shiftleftai-components'
 import express from 'express'
 
 // Create a static map to track created metrics and prevent duplicates
@@ -104,7 +104,7 @@ export class OpenTelemetry implements IMetricsProvider {
 
             this.meterProvider = new MeterProvider({ resource: this.resource, readers: [this.metricReader] })
 
-            const meter = this.meterProvider.getMeter('shiftlift-metrics')
+            const meter = this.meterProvider.getMeter('shiftleftai-metrics')
             // look at the SHIFTLIFT_COUNTER enum in Interface.Metrics.ts and get all values
             // for each counter in the enum, create a new promClient.Counter and add it to the registry
             const enumEntries = Object.entries(SHIFTLIFT_METRIC_COUNTERS)

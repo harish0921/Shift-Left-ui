@@ -33,7 +33,7 @@ const LicenseExpired = () => {
                         <Typography variant='body1' component='div' sx={{ mb: 2 }}>
                             Please contact our support team to renew your license.
                         </Typography>
-                        <a href='mailto:support@shiftlift.ai'>
+                        <a href='mailto:support@shiftleftai.ai'>
                             <StyledButton sx={{ px: 2, py: 1 }}>Contact Support</StyledButton>
                         </a>
                     </Stack>

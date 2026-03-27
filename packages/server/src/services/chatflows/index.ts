@@ -106,7 +106,7 @@ const checkIfChatflowIsValidForUploads = async (chatflowId: string): Promise<any
     }
 }
 
-const deleteChatflow = async (chatflowId: string, orgId: string, workspaceId: string): Promise<any> => {
+const deleteChatflow = async (chatflowId: string, orgId: string, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
 
@@ -220,13 +220,12 @@ const getAllChatflowsCount = async (type?: ChatflowType, workspaceId?: string): 
     }
 }
 
-const getChatflowByApiKey = async (apiKeyId: string, workspaceId: string, keyonly?: unknown): Promise<any> => {
+const getChatflowByApiKey = async (apiKeyId: string, workspaceId?: string, keyonly?: unknown): Promise<any> => {
     try {
         // Here we only get chatflows that are bounded by the apikeyid and chatflows that are not bounded by any apikey
         const appServer = getRunningExpressApp()
         let query = appServer.AppDataSource.getRepository(ChatFlow)
             .createQueryBuilder('cf')
-            .where('cf.workspaceId = :workspaceId', { workspaceId })
             .andWhere(
                 new Brackets((qb) => {
                     qb.where('cf.apikeyid = :apikeyid', { apikeyid: apiKeyId })
@@ -235,6 +234,7 @@ const getChatflowByApiKey = async (apiKeyId: string, workspaceId: string, keyonl
                     }
                 })
             )
+        if (workspaceId) query = query.andWhere('cf.workspaceId = :workspaceId', { workspaceId })
 
         const dbResponse = await query.orderBy('cf.name', 'ASC').getMany()
         if (dbResponse.length < 1) {

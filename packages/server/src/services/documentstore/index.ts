@@ -79,7 +79,7 @@ const createDocumentStore = async (newDocumentStore: DocumentStore, orgId: strin
     }
 }
 
-const getAllDocumentStores = async (workspaceId: string, page: number = -1, limit: number = -1) => {
+const getAllDocumentStores = async (workspaceId?: string, page: number = -1, limit: number = -1) => {
     try {
         const appServer = getRunningExpressApp()
         const queryBuilder = appServer.AppDataSource.getRepository(DocumentStore)
@@ -90,7 +90,7 @@ const getAllDocumentStores = async (workspaceId: string, page: number = -1, limi
             queryBuilder.skip((page - 1) * limit)
             queryBuilder.take(limit)
         }
-        queryBuilder.andWhere('doc_store.workspaceId = :workspaceId', { workspaceId })
+        if (workspaceId) queryBuilder.andWhere('doc_store.workspaceId = :workspaceId', { workspaceId })
 
         const [data, total] = await queryBuilder.getManyAndCount()
 
@@ -174,12 +174,14 @@ const deleteLoaderFromDocumentStore = async (
     }
 }
 
-const getDocumentStoreById = async (storeId: string, workspaceId: string) => {
+const getDocumentStoreById = async (storeId: string, workspaceId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(
@@ -196,7 +198,7 @@ const getDocumentStoreById = async (storeId: string, workspaceId: string) => {
     }
 }
 
-const getUsedChatflowNames = async (entity: DocumentStore, workspaceId: string) => {
+const getUsedChatflowNames = async (entity: DocumentStore, workspaceId?: string) => {
     try {
         const appServer = getRunningExpressApp()
         if (entity.whereUsed) {
@@ -204,7 +206,7 @@ const getUsedChatflowNames = async (entity: DocumentStore, workspaceId: string) 
             const updatedWhereUsed: IDocumentStoreWhereUsed[] = []
             for (let i = 0; i < whereUsed.length; i++) {
                 const associatedChatflow = await appServer.AppDataSource.getRepository(ChatFlow).findOne({
-                    where: { id: whereUsed[i], workspaceId: workspaceId },
+                    where: { id: whereUsed[i], ...(workspaceId ? { workspaceId } : {}) },
                     select: ['id', 'name']
                 })
                 if (associatedChatflow) {
@@ -230,13 +232,15 @@ const getDocumentStoreFileChunks = async (
     appDataSource: DataSource,
     storeId: string,
     docId: string,
-    workspaceId: string,
+    workspaceId?: string,
     pageNo: number = 1
 ) => {
     try {
-        const entity = await appDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(
@@ -316,10 +320,11 @@ const getDocumentStoreFileChunks = async (
 const deleteDocumentStore = async (storeId: string, orgId: string, workspaceId: string, usageCacheManager: UsageCacheManager) => {
     try {
         const appServer = getRunningExpressApp()
-
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${storeId} not found`)
@@ -357,12 +362,14 @@ const deleteDocumentStore = async (storeId: string, orgId: string, workspaceId: 
     }
 }
 
-const deleteDocumentStoreFileChunk = async (storeId: string, docId: string, chunkId: string, workspaceId: string) => {
+const deleteDocumentStoreFileChunk = async (storeId: string, docId: string, chunkId: string, workspaceId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${storeId} not found`)
@@ -393,14 +400,16 @@ const deleteDocumentStoreFileChunk = async (storeId: string, docId: string, chun
     }
 }
 
-const deleteVectorStoreFromStore = async (storeId: string, workspaceId: string, docId?: string) => {
+const deleteVectorStoreFromStore = async (storeId: string, workspaceId?: string, docId?: string) => {
     try {
         const appServer = getRunningExpressApp()
         const componentNodes = appServer.nodesPool.componentNodes
 
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${storeId} not found`)
@@ -479,13 +488,15 @@ const editDocumentStoreFileChunk = async (
     chunkId: string,
     content: string,
     metadata: ICommonObject,
-    workspaceId: string
+    workspaceId?: string
 ) => {
     try {
         const appServer = getRunningExpressApp()
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${storeId} not found`)
@@ -743,12 +754,14 @@ export const previewChunks = async ({ appDataSource, componentNodes, data, orgId
 const saveProcessingLoader = async (
     appDataSource: DataSource,
     data: IDocumentStoreLoaderForPreview,
-    workspaceId: string
+    workspaceId?: string
 ): Promise<IDocumentStoreLoader> => {
     try {
-        const entity = await appDataSource.getRepository(DocumentStore).findOneBy({
-            id: data.storeId,
-            workspaceId: workspaceId
+        const entity = await appDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: data.storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(
@@ -835,9 +848,11 @@ export const processLoader = async ({
     subscriptionId,
     usageCacheManager
 }: IExecuteProcessLoader) => {
-    const entity = await appDataSource.getRepository(DocumentStore).findOneBy({
-        id: data.storeId,
-        workspaceId: workspaceId
+    const entity = await appDataSource.getRepository(DocumentStore).findOne({
+        where: {
+            id: data.storeId,
+            ...(workspaceId ? { workspaceId } : {})
+        }
     })
     if (!entity) {
         throw new internalShiftLiftError(
@@ -1096,7 +1111,9 @@ const updateDocumentStoreUsage = async (chatId: string, storeId: string | undefi
         // find the document store
         const appServer = getRunningExpressApp()
         // find all entities that have the chatId in their whereUsed
-        const entities = await appServer.AppDataSource.getRepository(DocumentStore).findBy(getWorkspaceSearchOptions(workspaceId))
+        const entities = await appServer.AppDataSource.getRepository(DocumentStore).findBy(
+            workspaceId ? getWorkspaceSearchOptions(workspaceId) : {}
+        )
         entities.map(async (entity: DocumentStore) => {
             const whereUsed = JSON.parse(entity.whereUsed)
             const found = whereUsed.find((w: string) => w === chatId)
@@ -1137,12 +1154,14 @@ const updateDocumentStoreUsage = async (chatId: string, storeId: string | undefi
     }
 }
 
-const updateVectorStoreConfigOnly = async (data: ICommonObject, workspaceId: string) => {
+const updateVectorStoreConfigOnly = async (data: ICommonObject, workspaceId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: data.storeId,
-            workspaceId: workspaceId
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: data.storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${data.storeId} not found`)
@@ -1177,11 +1196,13 @@ const updateVectorStoreConfigOnly = async (data: ICommonObject, workspaceId: str
  * // Lenient mode: Reuse existing configs if not provided
  * await saveVectorStoreConfig(ds, { storeId, vectorStoreName, vectorStoreConfig }, false, wsId)
  */
-const saveVectorStoreConfig = async (appDataSource: DataSource, data: ICommonObject, isStrictSave = true, workspaceId: string) => {
+const saveVectorStoreConfig = async (appDataSource: DataSource, data: ICommonObject, isStrictSave = true, workspaceId?: string) => {
     try {
-        const entity = await appDataSource.getRepository(DocumentStore).findOneBy({
-            id: data.storeId,
-            workspaceId: workspaceId
+        const entity = await appDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: data.storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${data.storeId} not found`)
@@ -1335,13 +1356,15 @@ const _insertIntoVectorStoreWorkerThread = async (
     telemetry: Telemetry,
     data: ICommonObject,
     orgId: string,
-    workspaceId: string
+    workspaceId?: string
 ) => {
     try {
         // Configuration already saved by insertIntoVectorStore, just retrieve the entity
-        const entity = await appDataSource.getRepository(DocumentStore).findOneBy({
-            id: data.storeId,
-            workspaceId: workspaceId
+        const entity = await appDataSource.getRepository(DocumentStore).findOne({
+            where: {
+                id: data.storeId,
+                ...(workspaceId ? { workspaceId } : {})
+            }
         })
         if (!entity) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Document store ${data.storeId} not found`)

@@ -19,8 +19,8 @@
         <!-- Open Graph / Facebook -->
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://flowiseai.com/" />
-        <meta property="og:site_name" content="flowiseai.com" />
+        <meta property="og:url" content="https://shiftleftai.com/" />
+        <meta property="og:site_name" content="shiftleftai.com" />
         <meta property="og:title" content="Flowise - Build AI Agents, Visually" />
         <meta
             property="og:description"
@@ -60,8 +60,8 @@
         <div id="portal"></div>
         <script type="module" src="src/index.jsx"></script>
         <script>
-            if (global === undefined) {
-                var global = window
+            if (typeof global === 'undefined') {
+                window.global = window
             }
         </script>
     </body>

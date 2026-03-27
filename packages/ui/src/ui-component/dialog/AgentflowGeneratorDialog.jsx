@@ -146,6 +146,17 @@ const AgentflowGeneratorDialog = ({ show, dialogProps, onCancel, onConfirm }) =>
                 imageSrc: `${baseURL}/api/v1/node-icon/${chatModel.name}`
             }))
             setChatModelsOptions(options)
+
+            if (!selectedChatModel || Object.keys(selectedChatModel).length === 0) {
+                const preferredModel =
+                    getChatModelsApi.data.find((model) => model.credential?.optional) || getChatModelsApi.data[0]
+                if (preferredModel) {
+                    const chatModelId = `${preferredModel.name}_0`
+                    const clonedComponent = cloneDeep(preferredModel)
+                    const initChatModelData = initNode(clonedComponent, chatModelId)
+                    setSelectedChatModel(initChatModelData)
+                }
+            }
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -204,7 +215,31 @@ const AgentflowGeneratorDialog = ({ show, dialogProps, onCancel, onConfirm }) =>
             })
 
             if (response.data && response.data.nodes && response.data.edges) {
-                reactFlowInstance.setNodes(response.data.nodes)
+                const selectedModelName = selectedChatModel?.name
+                const selectedModelConfig = cloneDeep(selectedChatModel?.inputs || {})
+                if (selectedChatModel?.credential) {
+                    selectedModelConfig[FLOWISE_CREDENTIAL_ID] = selectedChatModel.credential
+                }
+
+                const modelInputKeys = new Set(['agentModel', 'llmModel', 'conditionAgentModel', 'humanInputModel'])
+                const patchedNodes = (response.data.nodes || []).map((node) => {
+                    if (!node?.data?.inputs || !selectedModelName) return node
+
+                    const nextNode = cloneDeep(node)
+                    const inputs = nextNode.data.inputs
+
+                    Object.keys(inputs).forEach((key) => {
+                        if (!modelInputKeys.has(key)) return
+
+                        inputs[key] = selectedModelName
+                        const configKey = `${key}Config`
+                        inputs[configKey] = cloneDeep(selectedModelConfig)
+                    })
+
+                    return nextNode
+                })
+
+                reactFlowInstance.setNodes(patchedNodes)
                 reactFlowInstance.setEdges(response.data.edges)
                 onConfirm()
             } else {
@@ -335,28 +370,6 @@ const AgentflowGeneratorDialog = ({ show, dialogProps, onCancel, onConfirm }) =>
                                     )
                                 })}
                             </div>
-                            {!generatedInstruction && (
-                                <OutlinedInput
-                                    sx={{ mt: 2, width: '100%' }}
-                                    type={'text'}
-                                    multiline={true}
-                                    rows={12}
-                                    disabled={loading}
-                                    value={customAssistantInstruction}
-                                    placeholder={'Describe your agent here'}
-                                    onChange={(event) => setCustomAssistantInstruction(event.target.value)}
-                                />
-                            )}
-                            {generatedInstruction && (
-                                <OutlinedInput
-                                    sx={{ mt: 2, width: '100%' }}
-                                    type={'text'}
-                                    multiline={true}
-                                    rows={12}
-                                    value={generatedInstruction}
-                                    onChange={(event) => setGeneratedInstruction(event.target.value)}
-                                />
-                            )}
                             <Box sx={{ mt: 2 }}>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <Typography>
@@ -406,6 +419,28 @@ const AgentflowGeneratorDialog = ({ show, dialogProps, onCancel, onConfirm }) =>
                                         ))}
                                 </Box>
                             )}
+                            {!generatedInstruction && (
+                                <OutlinedInput
+                                    sx={{ mt: 2, width: '100%' }}
+                                    type={'text'}
+                                    multiline={true}
+                                    rows={8}
+                                    disabled={loading}
+                                    value={customAssistantInstruction}
+                                    placeholder={'Describe your agent here'}
+                                    onChange={(event) => setCustomAssistantInstruction(event.target.value)}
+                                />
+                            )}
+                            {generatedInstruction && (
+                                <OutlinedInput
+                                    sx={{ mt: 2, width: '100%' }}
+                                    type={'text'}
+                                    multiline={true}
+                                    rows={12}
+                                    value={generatedInstruction}
+                                    onChange={(event) => setGeneratedInstruction(event.target.value)}
+                                />
+                            )}
                         </>
                     )}
                 </DialogContent>
@@ -435,6 +470,14 @@ const AgentflowGeneratorDialog = ({ show, dialogProps, onCancel, onConfirm }) =>
                                     Generate
                                 </LoadingButton>
                             )}
+                            {!generatedInstruction &&
+                                (!selectedChatModel ||
+                                !Object.keys(selectedChatModel).length ||
+                                !checkMandatoryFields().isValid) && (
+                                    <Typography variant='caption' color='text.secondary' sx={{ ml: 1 }}>
+                                        Select a model and fill required fields to enable Generate.
+                                    </Typography>
+                                )}
                             {generatedInstruction && (
                                 <Button
                                     variant='outlined'

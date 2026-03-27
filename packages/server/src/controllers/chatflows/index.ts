@@ -56,13 +56,7 @@ const deleteChatflow = async (req: Request, res: Response, next: NextFunction) =
                 `Error: chatflowsController.deleteChatflow - organization ${orgId} not found!`
             )
         }
-        const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: chatflowsController.deleteChatflow - workspace ${workspaceId} not found!`
-            )
-        }
+        const workspaceId = req.user?.activeWorkspaceId || ''
         const apiResponse = await chatflowsService.deleteChatflow(req.params.id, orgId, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -111,13 +105,7 @@ const getChatflowById = async (req: Request, res: Response, next: NextFunction) 
         if (typeof req.params === 'undefined' || !req.params.id) {
             throw new internalShiftLiftError(StatusCodes.PRECONDITION_FAILED, `Error: chatflowsController.getChatflowById - id not provided!`)
         }
-        const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: chatflowsController.getChatflowById - workspace ${workspaceId} not found!`
-            )
-        }
+        const workspaceId = req.user?.activeWorkspaceId || ''
         const apiResponse = await chatflowsService.getChatflowById(req.params.id, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -137,13 +125,7 @@ const saveChatflow = async (req: Request, res: Response, next: NextFunction) => 
                 `Error: chatflowsController.saveChatflow - organization ${orgId} not found!`
             )
         }
-        const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: chatflowsController.saveChatflow - workspace ${workspaceId} not found!`
-            )
-        }
+        const workspaceId = req.user?.activeWorkspaceId || ''
         const subscriptionId = req.user?.activeOrganizationSubscriptionId || ''
         const body = req.body
 
@@ -153,7 +135,7 @@ const saveChatflow = async (req: Request, res: Response, next: NextFunction) => 
 
         const newChatFlow = new ChatFlow()
         Object.assign(newChatFlow, body)
-        newChatFlow.workspaceId = workspaceId
+        if (workspaceId) newChatFlow.workspaceId = workspaceId
         const apiResponse = await chatflowsService.saveChatflow(
             newChatFlow,
             orgId,
@@ -174,12 +156,6 @@ const updateChatflow = async (req: Request, res: Response, next: NextFunction) =
             throw new internalShiftLiftError(StatusCodes.PRECONDITION_FAILED, `Error: chatflowsController.updateChatflow - id not provided!`)
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: chatflowsController.saveChatflow - workspace ${workspaceId} not found!`
-            )
-        }
         const chatflow = await chatflowsService.getChatflowById(req.params.id, workspaceId)
         if (!chatflow) {
             return res.status(404).send('Chatflow not found')

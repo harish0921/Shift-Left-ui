@@ -57,7 +57,7 @@ const PricingDialog = ({ open, onClose }) => {
 
     const handlePlanClick = async (plan) => {
         if (plan.title === 'Enterprise') {
-            window.location.href = 'mailto:hello@shiftlift.ai'
+            window.location.href = 'mailto:hello@shiftleftai.ai'
             return
         }
 

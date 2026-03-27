@@ -473,7 +473,7 @@ const ShareChatbot = ({ isSessionMemory, isAgentCanvas }) => {
                     'titleAvatarSrc',
                     'Title Avatar Link',
                     'string',
-                    `https://shiftlift.ai/og-image/og-twitter.png`
+                    `https://shiftleftai.ai/og-image/og-twitter.png`
                 )}
                 {colorField(titleBackgroundColor, 'titleBackgroundColor', 'Title Background Color')}
                 {colorField(titleTextColor, 'titleTextColor', 'Title TextColor')}

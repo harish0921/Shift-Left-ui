@@ -18,11 +18,8 @@ const createVariable = async (req: Request, res: Response, next: NextFunction) =
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Error: toolsController.createTool - organization ${orgId} not found!`)
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Error: toolsController.createTool - workspace ${workspaceId} not found!`)
-        }
         const body = req.body
-        body.workspaceId = workspaceId
+        if (workspaceId) body.workspaceId = workspaceId
         const newVariable = new Variable()
         Object.assign(newVariable, body)
         const apiResponse = await variablesService.createVariable(newVariable, orgId)
@@ -38,12 +35,6 @@ const deleteVariable = async (req: Request, res: Response, next: NextFunction) =
             throw new internalShiftLiftError(StatusCodes.PRECONDITION_FAILED, 'Error: variablesController.deleteVariable - id not provided!')
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: variablesController.deleteVariable - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await variablesService.deleteVariable(req.params.id, workspaceId)
         return res.json(apiResponse)
     } catch (error) {
@@ -55,12 +46,6 @@ const getAllVariables = async (req: Request, res: Response, next: NextFunction) 
     try {
         const { page, limit } = getPageAndLimitParams(req)
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: variablesController.getAllVariables - workspace ${workspaceId} not found!`
-            )
-        }
         const apiResponse = await variablesService.getAllVariables(workspaceId, page, limit)
         return res.json(apiResponse)
     } catch (error) {
@@ -80,12 +65,6 @@ const updateVariable = async (req: Request, res: Response, next: NextFunction) =
             )
         }
         const workspaceId = req.user?.activeWorkspaceId
-        if (!workspaceId) {
-            throw new internalShiftLiftError(
-                StatusCodes.NOT_FOUND,
-                `Error: variablesController.updateVariable - workspace ${workspaceId} not found!`
-            )
-        }
         const variable = await variablesService.getVariableById(req.params.id, workspaceId)
         if (!variable) {
             return res.status(404).send('Variable not found in the database')

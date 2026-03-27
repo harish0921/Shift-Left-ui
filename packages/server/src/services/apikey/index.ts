@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { v4 as uuidv4 } from 'uuid'
 import { ApiKey } from '../../database/entities/ApiKey'
+import { Workspace } from '../../enterprise/database/entities/workspace.entity'
 import { LoggedInUser } from '../../enterprise/Interface.Enterprise'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'
@@ -103,7 +104,7 @@ async function getAllApiKeysByOrganization(organizationId: string): Promise<ApiK
 }
 
 /**
- * Get all API keys for a workspace
+ * Get all API keys
  * Non-admin users can only view API keys whose permissions are a subset of their own permissions
  */
 const getAllApiKeys = async (user: LoggedInUser, page: number = -1, limit: number = -1) => {
@@ -116,7 +117,6 @@ const getAllApiKeys = async (user: LoggedInUser, page: number = -1, limit: numbe
             queryBuilder.skip((page - 1) * limit)
             queryBuilder.take(limit)
         }
-        queryBuilder.andWhere('api_key.workspaceId = :workspaceId', { workspaceId: user.activeWorkspaceId })
         const allKeys = await queryBuilder.getMany()
 
         // Filter keys based on user permissions
@@ -184,7 +184,18 @@ const createApiKey = async (user: LoggedInUser, keyName: string, permissions: st
     newKey.apiSecret = apiSecret
     newKey.keyName = keyName
     newKey.permissions = permissions
-    newKey.workspaceId = user.activeWorkspaceId
+    let workspaceId = user.activeWorkspaceId
+    if (!workspaceId) {
+        const fallbackWorkspace = await appServer.AppDataSource.getRepository(Workspace)
+            .createQueryBuilder('workspace')
+            .orderBy('workspace.createdDate', 'ASC')
+            .getOne()
+        workspaceId = fallbackWorkspace?.id
+    }
+    if (!workspaceId) {
+        throw new internalShiftLiftError(StatusCodes.NOT_FOUND, 'Error: apikeyService.createApiKey - no workspace found')
+    }
+    newKey.workspaceId = workspaceId
     const key = appServer.AppDataSource.getRepository(ApiKey).create(newKey)
     await appServer.AppDataSource.getRepository(ApiKey).save(key)
     return await getAllApiKeys(user)
@@ -197,8 +208,7 @@ const updateApiKey = async (user: LoggedInUser, id: string, keyName: string, per
 
     const appServer = getRunningExpressApp()
     const currentKey = await appServer.AppDataSource.getRepository(ApiKey).findOneBy({
-        id: id,
-        workspaceId: user.activeWorkspaceId
+        id: id
     })
     if (!currentKey) {
         throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `ApiKey ${currentKey} not found`)
@@ -209,10 +219,10 @@ const updateApiKey = async (user: LoggedInUser, id: string, keyName: string, per
     return await getAllApiKeys(user)
 }
 
-const deleteApiKey = async (id: string, workspaceId: string) => {
+const deleteApiKey = async (id: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(ApiKey).delete({ id, workspaceId })
+        const dbResponse = await appServer.AppDataSource.getRepository(ApiKey).delete({ id })
         if (!dbResponse) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `ApiKey ${id} not found`)
         }

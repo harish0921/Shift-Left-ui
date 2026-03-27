@@ -1,6 +1,6 @@
-# @flowiseai/agentflow
+# @shiftleftai/agentflow
 
-[![Version](https://img.shields.io/npm/v/@flowiseai/agentflow)](https://www.npmjs.com/package/@flowiseai/agentflow)
+[![Version](https://img.shields.io/npm/v/@shiftleftai/agentflow)](https://www.npmjs.com/package/@shiftleftai/agentflow)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](https://github.com/FlowiseAI/Flowise/blob/main/LICENSE.md)
 
 > Embeddable React component for building and visualizing AI agent workflows
@@ -19,7 +19,7 @@
 
 ## Overview
 
-`@flowiseai/agentflow` is a React-based flow editor for creating AI agent workflows. It provides a visual canvas built on ReactFlow for connecting AI agents, LLMs, tools, and logic nodes.
+`@shiftleftai/agentflow` is a React-based flow editor for creating AI agent workflows. It provides a visual canvas built on ReactFlow for connecting AI agents, LLMs, tools, and logic nodes.
 
 ## Features
 
@@ -40,7 +40,7 @@
 ## Installation
 
 ```bash
-pnpm add @flowiseai/agentflow
+pnpm add @shiftleftai/agentflow
 ```
 
 **Peer Dependencies:**
@@ -52,9 +52,9 @@ pnpm add react react-dom @mui/material @mui/icons-material @emotion/react @emoti
 ## Basic Usage
 
 ```tsx
-import { Agentflow } from '@flowiseai/agentflow'
+import { Agentflow } from '@shiftleftai/agentflow'
 
-import '@flowiseai/agentflow/flowise.css'
+import '@shiftleftai/agentflow/shiftleft.css'
 
 export default function App() {
     return (
@@ -62,7 +62,8 @@ export default function App() {
             <Agentflow apiBaseUrl='http://localhost:3000' token='your-api-key' />
         </div>
     )
-}
+}
+
 ```
 
 ### With Initial Flow Data and Callbacks
@@ -70,9 +71,9 @@ export default function App() {
 ```tsx
 import { useRef } from 'react'
 
-import { Agentflow, type AgentFlowInstance, type FlowData } from '@flowiseai/agentflow'
-
-import '@flowiseai/agentflow/flowise.css'
+import { Agentflow, type AgentFlowInstance, type FlowData } from '@shiftleftai/agentflow'
+shiftleft
+import '@shiftleftai/agentflow/flowise.css'
 
 export default function App() {
     const ref = useRef<AgentFlowInstance>(null)
@@ -109,7 +110,8 @@ export default function App() {
             />
         </div>
     )
-}
+}
+
 ```
 
 ## Props
@@ -194,7 +196,8 @@ Beyond the main `<Agentflow>` component, the package exports utilities for advan
 // Validation
 // Node utilities
 
-// Field visibility helpers
+// Field visibility helpers
+
 ```
 
 ## Development
@@ -245,7 +248,7 @@ npm publish --dry-run
 ### Publish
 
 ```bash
-# Prerelease — tagged so `npm install @flowiseai/agentflow` won't pick it up
+# Prerelease — tagged so `npm install @shiftleftai/agentflow` won't pick it up
 npm publish --tag dev
 
 # Stable release — gets the `latest` tag

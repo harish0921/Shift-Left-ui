@@ -23,16 +23,16 @@ beforeEach(() => {
 
 describe('bindApiClient', () => {
     it('should create client with correct baseURL', () => {
-        bindApiClient('https://flowise.example.com')
+        bindApiClient('https://shiftleft.example.com')
         expect(mockedAxios.create).toHaveBeenCalledWith(
             expect.objectContaining({
-                baseURL: 'https://flowise.example.com/api/v1'
+                baseURL: 'https://shiftleft.example.com/api/v1'
             })
         )
     })
 
     it('should set Content-Type header', () => {
-        bindApiClient('https://flowise.example.com')
+        bindApiClient('https://shiftleft.example.com')
         expect(mockedAxios.create).toHaveBeenCalledWith(
             expect.objectContaining({
                 headers: expect.objectContaining({
@@ -43,7 +43,7 @@ describe('bindApiClient', () => {
     })
 
     it('should set Authorization header when token is provided', () => {
-        bindApiClient('https://flowise.example.com', 'my-token')
+        bindApiClient('https://shiftleft.example.com', 'my-token')
         expect(mockedAxios.create).toHaveBeenCalledWith(
             expect.objectContaining({
                 headers: expect.objectContaining({
@@ -54,40 +54,40 @@ describe('bindApiClient', () => {
     })
 
     it('should not set Authorization header when no token', () => {
-        bindApiClient('https://flowise.example.com')
+        bindApiClient('https://shiftleft.example.com')
         const headers = mockedAxios.create.mock.calls[0][0]?.headers as Record<string, string>
         expect(headers['Authorization']).toBeUndefined()
     })
 
     it('should register request and response interceptors', () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         expect(client.interceptors.request.use).toHaveBeenCalledTimes(1)
         expect(client.interceptors.response.use).toHaveBeenCalledTimes(1)
     })
 
     it('should pass config through request interceptor', () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         const successHandler = (client.interceptors.request.use as jest.Mock).mock.calls[0][0]
         const config = { url: '/chatflows', headers: {} }
         expect(successHandler(config)).toBe(config)
     })
 
     it('should pass response through response interceptor', () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         const successHandler = (client.interceptors.response.use as jest.Mock).mock.calls[0][0]
         const response = { data: {}, status: 200 }
         expect(successHandler(response)).toBe(response)
     })
 
     it('should reject request interceptor errors', async () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         const errorHandler = (client.interceptors.request.use as jest.Mock).mock.calls[0][1]
         const error = new Error('Network error')
         await expect(errorHandler(error)).rejects.toBe(error)
     })
 
     it('should reject 401 errors through response interceptor', async () => {
-        const client = bindApiClient('https://flowise.example.com', 'tok')
+        const client = bindApiClient('https://shiftleft.example.com', 'tok')
         const errorHandler = (client.interceptors.response.use as jest.Mock).mock.calls[0][1]
 
         const error = {
@@ -106,7 +106,7 @@ describe('bindApiClient', () => {
     })
 
     it('should pass through non-401 errors without logging', async () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         const errorHandler = (client.interceptors.response.use as jest.Mock).mock.calls[0][1]
 
         const error = { response: { status: 500 }, message: 'Server error' }
@@ -117,7 +117,7 @@ describe('bindApiClient', () => {
     })
 
     it('should not set withCredentials by default', () => {
-        bindApiClient('https://flowise.example.com')
+        bindApiClient('https://shiftleft.example.com')
         expect(mockedAxios.create).toHaveBeenCalledWith(
             expect.not.objectContaining({
                 withCredentials: true
@@ -130,7 +130,7 @@ describe('bindApiClient', () => {
             config.withCredentials = true
             return config
         })
-        const client = bindApiClient('https://flowise.example.com', undefined, interceptor)
+        const client = bindApiClient('https://shiftleft.example.com', undefined, interceptor)
         const successHandler = (client.interceptors.request.use as jest.Mock).mock.calls[0][0]
         const config = { url: '/chatflows', headers: {} }
         const result = successHandler(config)
@@ -139,7 +139,7 @@ describe('bindApiClient', () => {
     })
 
     it('should pass config through when no requestInterceptor is provided', () => {
-        const client = bindApiClient('https://flowise.example.com')
+        const client = bindApiClient('https://shiftleft.example.com')
         const successHandler = (client.interceptors.request.use as jest.Mock).mock.calls[0][0]
         const config = { url: '/chatflows', headers: {} }
         expect(successHandler(config)).toBe(config)
@@ -149,7 +149,7 @@ describe('bindApiClient', () => {
         const interceptor = jest.fn(() => {
             throw new Error('interceptor broke')
         })
-        const client = bindApiClient('https://flowise.example.com', undefined, interceptor)
+        const client = bindApiClient('https://shiftleft.example.com', undefined, interceptor)
         const successHandler = (client.interceptors.request.use as jest.Mock).mock.calls[0][0]
         const config = { url: '/chatflows', headers: {} }
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation()

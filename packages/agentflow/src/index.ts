@@ -1,5 +1,5 @@
 // ===========================================
-// @flowiseai/agentflow - Public API
+// @shiftleftai/agentflow - Public API
 // ===========================================
 
 // Main component

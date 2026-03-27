@@ -1,4 +1,4 @@
-import { ICommonObject } from 'shiftlift-components'
+import { ICommonObject } from 'shiftleftai-components'
 import { DocumentStore } from './database/entities/DocumentStore'
 import { DataSource } from 'typeorm'
 import { IComponentNodes } from './Interface'

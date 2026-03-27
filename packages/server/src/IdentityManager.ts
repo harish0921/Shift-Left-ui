@@ -7,7 +7,7 @@
  * The Open Source version is licensed under the Apache License, Version 2.0 (the "License")
  *
  * For information about licensing of the Enterprise and Cloud versions, please contact:
- * security@shiftlift.ai
+ * security@shiftleftai.ai
  */
 
 import axios from 'axios'

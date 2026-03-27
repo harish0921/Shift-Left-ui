@@ -1,11 +1,11 @@
 {
-    "name": "shiftlift",
+    "name": "shiftleftai",
     "version": "3.1.1",
     "description": "shift left  Server",
     "main": "dist/index",
     "types": "dist/index.d.ts",
     "bin": {
-        "shiftlift": "./bin/run"
+        "shiftleftai": "./bin/run"
     },
     "files": [
         "bin",
@@ -16,7 +16,7 @@
         "oauth2.html"
     ],
     "oclif": {
-        "bin": "shiftlift",
+        "bin": "shiftleftai",
         "commands": "./dist/commands"
     },
     "scripts": {
@@ -52,10 +52,10 @@
         "test:coverage": "jest --coverage"
     },
     "keywords": [],
-    "homepage": "https://shiftlift.ai",
+    "homepage": "https://shiftleftai.ai",
     "author": {
         "name": "Henry Heng",
-        "email": "support@shiftlift.ai"
+        "email": "support@shiftleftai.ai"
     },
     "engines": {
         "node": ">=18.15.0 <19.0.0 || ^20"
@@ -106,9 +106,9 @@
         "express-mysql-session": "^3.0.3",
         "express-rate-limit": "^6.9.0",
         "express-session": "^1.18.1",
-        "shiftlift-components": "workspace:^",
-        "shiftlift-nim-container-manager": "npm:shiftleft-nim-container-manager@^1.0.11",
-        "shiftlift-ui": "workspace:^",
+        "shiftleftai-components": "workspace:^",
+        "shiftleftai-nim-container-manager": "npm:shiftleft-nim-container-manager@^1.0.11",
+        "shiftleftai-ui": "workspace:^",
         "global-agent": "^3.0.0",
         "gulp": "^4.0.2",
         "handlebars": "^4.7.8",

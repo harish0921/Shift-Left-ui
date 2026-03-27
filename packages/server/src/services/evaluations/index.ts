@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { EvaluationRunner, ICommonObject } from 'shiftlift-components'
+import { EvaluationRunner, ICommonObject } from 'shiftleftai-components'
 import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'

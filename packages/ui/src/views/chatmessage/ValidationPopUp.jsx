@@ -51,7 +51,17 @@ const ValidationPopUp = ({ chatflowid, hidden }) => {
     }
 
     const validateFlow = async () => {
-        if (!chatflowid) return
+        if (!chatflowid) {
+            enqueueSnackbar({
+                message: 'Save this agent first, then run validation.',
+                options: {
+                    key: new Date().getTime() + Math.random(),
+                    variant: 'warning',
+                    autoHideDuration: 3000
+                }
+            })
+            return
+        }
 
         try {
             setLoading(true)
@@ -276,13 +286,18 @@ const ValidationPopUp = ({ chatflowid, hidden }) => {
                                             variant='contained'
                                             color='teal'
                                             onClick={validateFlow}
-                                            disabled={loading}
+                                            disabled={loading || !chatflowid}
                                             startIcon={loading ? null : <IconCheckbox size={18} />}
                                             sx={{ color: 'white', minWidth: '120px' }}
                                         >
                                             {loading ? 'Validating...' : 'Validate Flow'}
                                         </Button>
                                     </Box>
+                                    {!chatflowid && (
+                                        <Typography variant='caption' color='text.secondary' sx={{ textAlign: 'center', display: 'block' }}>
+                                            Save this agent first to enable validation.
+                                        </Typography>
+                                    )}
                                 </MainCard>
                             </ClickAwayListener>
                         </Paper>

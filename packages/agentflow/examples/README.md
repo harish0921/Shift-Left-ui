@@ -1,6 +1,6 @@
-# @flowiseai/agentflow Examples
+# @shiftleftai/agentflow Examples
 
-This folder demonstrates various usage patterns of the `@flowiseai/agentflow` package.
+This folder demonstrates various usage patterns of the `@shiftleftai/agentflow` package.
 
 ## Setup
 

@@ -19,7 +19,7 @@ import {
     EvaluationRunner,
     handleEscapeCharacters,
     IServerSideEventStreamer
-} from 'shiftlift-components'
+} from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import {
     IncomingInput,
@@ -1005,7 +1005,7 @@ export const utilBuildChatflow = async (req: Request, isInternal: boolean = fals
     const chatId = incomingInput.chatId ?? incomingInput.overrideConfig?.sessionId ?? uuidv4()
     const files = (req.files as Express.Multer.File[]) || []
     const abortControllerId = `${chatflow.id}_${chatId}`
-    const isTool = req.get('shiftlift-tool') === 'true'
+    const isTool = req.get('shiftleftai-tool') === 'true'
     const isEvaluation: boolean = req.headers['X-Shiftlift-Evaluation'] || req.body.evaluation
     let evaluationRunId = ''
     evaluationRunId = req.body.evaluationRunId

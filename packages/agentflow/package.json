@@ -1,5 +1,5 @@
 {
-    "name": "@flowiseai/agentflow",
+    "name": "@shiftleftai/agentflow",
     "version": "0.0.0-dev.6",
     "description": "Embeddable React component for building and visualizing AI agent workflows",
     "license": "Apache-2.0",
@@ -13,8 +13,8 @@
         "url": "https://github.com/FlowiseAI/Flowise/issues"
     },
     "keywords": [
-        "flowise",
-        "flowiseai",
+        "shiftleft",
+        "shiftleftai",
         "agentflow",
         "react",
         "llm",
@@ -35,7 +35,7 @@
             "require": "./dist/index.umd.js",
             "types": "./dist/index.d.ts"
         },
-        "./flowise.css": "./dist/flowise.css"
+        "./shiftleft.css": "./dist/shiftleft.css"
     },
     "files": [
         "dist"
@@ -80,7 +80,7 @@
         "@uiw/codemirror-theme-vscode": "^4.21.0",
         "@uiw/react-codemirror": "^4.21.0",
         "axios": "^1.7.2",
-        "shiftlift-react-json-view": "npm:flowise-react-json-view@^1.21.7",
+        "shiftleftai-react-json-view": "npm:shiftleft-react-json-view@^1.21.7",
         "lodash": "^4.17.21",
         "lowlight": "^3.3.0",
         "uuid": "^10.0.0"

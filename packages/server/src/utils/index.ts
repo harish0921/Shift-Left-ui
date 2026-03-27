@@ -39,7 +39,7 @@ import {
     FlowiseMemory,
     IFileUpload,
     StorageProviderFactory
-} from 'shiftlift-components'
+} from 'shiftleftai-components'
 import { randomBytes } from 'crypto'
 import { AES, enc } from 'crypto-js'
 
@@ -1580,7 +1580,7 @@ export const getEncryptionKey = async (): Promise<string> => {
         const encryptKey = generateEncryptKey()
         const defaultLocation = process.env.SECRETKEY_PATH
             ? path.join(process.env.SECRETKEY_PATH, 'encryption.key')
-            : path.join(getUserHome(), '.shiftlift', 'encryption.key')
+            : path.join(getUserHome(), '.shiftleftai', 'encryption.key')
         await fs.promises.writeFile(defaultLocation, encryptKey)
         return encryptKey
     }
@@ -1664,7 +1664,7 @@ export const generateEncryptKey = (): string => {
  * Used for file-based storage of TOKEN_HASH_SECRET, EXPRESS_SESSION_SECRET, JWT_*, etc.
  */
 export const getAuthSecretsDirectory = (): string => {
-    return process.env.SECRETKEY_PATH ? process.env.SECRETKEY_PATH : path.join(getUserHome(), '.shiftlift')
+    return process.env.SECRETKEY_PATH ? process.env.SECRETKEY_PATH : path.join(getUserHome(), '.shiftleftai')
 }
 
 /**
@@ -1679,7 +1679,7 @@ export interface GetOrCreateStoredSecretOptions {
     envKey: string
     fileName: string
     awsSecretIdSuffix: string
-    /** When generating a new secret, use this value instead of random (e.g. 'shiftlift' for JWT_ISSUER/JWT_AUDIENCE) */
+    /** When generating a new secret, use this value instead of random (e.g. 'shiftleftai' for JWT_ISSUER/JWT_AUDIENCE) */
     defaultValueForNew?: string
     /** If env is set to this value, treat as unset (backwards compat for weak defaults) */
     weakDefault?: string
@@ -1987,7 +1987,7 @@ export const getAPIOverrideConfig = (chatflow: IChatFlow) => {
 export const getUploadPath = (): string => {
     return process.env.BLOB_STORAGE_PATH
         ? path.join(process.env.BLOB_STORAGE_PATH, 'uploads')
-        : path.join(getUserHome(), '.shiftlift', 'uploads')
+        : path.join(getUserHome(), '.shiftleftai', 'uploads')
 }
 
 export function generateId() {

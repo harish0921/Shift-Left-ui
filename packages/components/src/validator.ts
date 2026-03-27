@@ -183,9 +183,9 @@ export const filterAllowedUploadMimeTypes = (mimeTypes: string[]): string[] => {
 const getAllowedVectorStoreBaseDirs = (): string[] => {
     const allowedDirs: string[] = []
 
-    // Allow user home .flowise directory
+    // Allow user home .shiftleft directory
     const userHome = getUserHome()
-    allowedDirs.push(path.join(userHome, '.flowise'))
+    allowedDirs.push(path.join(userHome, '.shiftleft'))
 
     // Allow configured blob storage path if set
     if (process.env.BLOB_STORAGE_PATH) {
@@ -208,15 +208,15 @@ const getAllowedVectorStoreBaseDirs = (): string[] => {
 export const validateVectorStorePath = (userProvidedPath: string | undefined): string => {
     if (process.env.PATH_TRAVERSAL_SAFETY === 'false') {
         if (!userProvidedPath || userProvidedPath.trim() === '') {
-            return path.join(getUserHome(), '.flowise', 'vectorstore')
+            return path.join(getUserHome(), '.shiftleft', 'vectorstore')
         }
         const bypassPath = userProvidedPath.trim()
-        return path.isAbsolute(bypassPath) ? bypassPath : path.resolve(path.join(getUserHome(), '.flowise', bypassPath))
+        return path.isAbsolute(bypassPath) ? bypassPath : path.resolve(path.join(getUserHome(), '.shiftleft', bypassPath))
     }
 
     // If no path provided, use default secure location
     if (!userProvidedPath || userProvidedPath.trim() === '') {
-        return path.join(getUserHome(), '.flowise', 'vectorstore')
+        return path.join(getUserHome(), '.shiftleft', 'vectorstore')
     }
 
     const basePath = userProvidedPath.trim()
@@ -249,14 +249,14 @@ export const validateVectorStorePath = (userProvidedPath: string | undefined): s
     }
 
     // Resolve to absolute path
-    // If path is relative, resolve it relative to the .flowise directory (safe default)
+    // If path is relative, resolve it relative to the .shiftleft directory (safe default)
     // If path is already absolute, keep it as-is
     let resolvedPath: string
     if (path.isAbsolute(basePath)) {
         resolvedPath = path.resolve(basePath)
     } else {
-        // Relative paths are resolved within the .flowise directory for safety
-        resolvedPath = path.resolve(path.join(getUserHome(), '.flowise', basePath))
+        // Relative paths are resolved within the .shiftleft directory for safety
+        resolvedPath = path.resolve(path.join(getUserHome(), '.shiftleft', basePath))
     }
 
     // Verify the resolved path doesn't contain '..' after resolution
@@ -272,7 +272,7 @@ export const validateVectorStorePath = (userProvidedPath: string | undefined): s
         const normalizedAllowed = path.normalize(allowedDir)
 
         // Check if resolved path starts with allowed directory
-        // Add path separator to avoid partial matches (e.g., /home/user/.flowise vs /home/user/.flowise2)
+        // Add path separator to avoid partial matches (e.g., /home/user/.shiftleft vs /home/user/.flowise2)
         return normalizedResolved === normalizedAllowed || normalizedResolved.startsWith(normalizedAllowed + path.sep)
     })
 

@@ -124,7 +124,7 @@ export class OrganizationUserController {
                 const deleteUser = await queryRunner.manager.findOneBy(User, { id: query.userId })
                 if (!deleteUser) throw new internalShiftLiftError(StatusCodes.INTERNAL_SERVER_ERROR, GeneralErrorMessage.UNHANDLED_EDGE_CASE)
                 deleteUser.name = UserStatus.DELETED
-                deleteUser.email = `deleted_${deleteUser.id}_${Date.now()}@deleted.shiftlift`
+                deleteUser.email = `deleted_${deleteUser.id}_${Date.now()}@deleted.shiftleftai`
                 deleteUser.status = UserStatus.DELETED
                 deleteUser.credential = null
                 deleteUser.tokenExpiry = null

@@ -12,7 +12,7 @@ class LunaryApi implements INodeCredential {
         this.name = 'lunaryApi'
         this.version = 1.0
         this.description =
-            'Refer to the <a target="_blank" href="https://lunary.ai/docs?utm_source=flowise">official guide</a> to get a public key.'
+            'Refer to the <a target="_blank" href="https://lunary.ai/docs?utm_source=shiftleft">official guide</a> to get a public key.'
         this.inputs = [
             {
                 label: 'Public Key / Project ID',

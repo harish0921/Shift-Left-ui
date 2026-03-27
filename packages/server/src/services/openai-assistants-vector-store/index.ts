@@ -5,7 +5,7 @@ import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'
 import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { decryptCredentialData } from '../../utils'
-import { getFileFromUpload, removeSpecificFileFromUpload } from 'shiftlift-components'
+import { getFileFromUpload, removeSpecificFileFromUpload } from 'shiftleftai-components'
 
 const getAssistantVectorStore = async (credentialId: string, vectorStoreId: string) => {
     try {

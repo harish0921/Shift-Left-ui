@@ -1,4 +1,4 @@
-import { removeFilesFromStorage } from 'shiftlift-components'
+import { removeFilesFromStorage } from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { DeleteResult, FindOptionsWhere, In } from 'typeorm'
 import { ChatMessage } from '../../database/entities/ChatMessage'

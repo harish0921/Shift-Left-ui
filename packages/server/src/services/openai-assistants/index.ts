@@ -5,7 +5,7 @@ import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { Credential } from '../../database/entities/Credential'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'
-import { getFileFromUpload, removeSpecificFileFromUpload } from 'shiftlift-components'
+import { getFileFromUpload, removeSpecificFileFromUpload } from 'shiftleftai-components'
 
 // ----------------------------------------
 // Assistants

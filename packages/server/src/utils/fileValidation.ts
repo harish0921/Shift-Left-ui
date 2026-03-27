@@ -1,4 +1,4 @@
-import { filterAllowedUploadMimeTypes, validateMimeTypeAndExtensionMatch } from 'shiftlift-components'
+import { filterAllowedUploadMimeTypes, validateMimeTypeAndExtensionMatch } from 'shiftleftai-components'
 import { internalShiftLiftError } from '../errors/internalShiftLiftError'
 import { StatusCodes } from 'http-status-codes'
 import { getErrorMessage } from '../errors/utils'

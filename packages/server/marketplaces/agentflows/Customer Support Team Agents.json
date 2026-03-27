@@ -499,7 +499,7 @@
                     "embeddings": "{{openAIEmbeddings_0.data.instance}}",
                     "recordManager": "",
                     "pineconeIndex": "flowiseindex",
-                    "pineconeNamespace": "pinecone-flowise-docs",
+                    "pineconeNamespace": "pinecone-shiftleft-docs",
                     "pineconeMetadataFilter": "",
                     "topK": "",
                     "searchType": "similarity",

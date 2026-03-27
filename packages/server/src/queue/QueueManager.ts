@@ -13,7 +13,7 @@ import { Express } from 'express'
 import { UsageCacheManager } from '../UsageCacheManager'
 import { ExpressAdapter } from '@bull-board/express'
 
-const QUEUE_NAME = process.env.QUEUE_NAME || 'shiftlift-queue'
+const QUEUE_NAME = process.env.QUEUE_NAME || 'shiftleftai-queue'
 
 type QUEUE_TYPE = 'prediction' | 'upsert'
 

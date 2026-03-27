@@ -7,7 +7,7 @@ import { getOrCreateStoredSecret } from '../../utils'
 const WEAK_DEFAULTS: Record<string, string> = {
     JWT_AUTH_TOKEN_SECRET: 'AABBCCDDAABBCCDDAABBCCDDAABBCCDDAABBCCDD',
     JWT_REFRESH_TOKEN_SECRET: 'AABBCCDDAABBCCDDAABBCCDDAABBCCDDAABBCCDD',
-    EXPRESS_SESSION_SECRET: 'shiftlift',
+    EXPRESS_SESSION_SECRET: 'shiftleftai',
     TOKEN_HASH_SECRET: 'popcorn'
 }
 
@@ -22,7 +22,7 @@ const NOT_INITIALIZED = 'Auth secrets not initialized. Call initAuthSecrets() fi
 
 /**
  * Initialize auth secrets from env (backwards compat) → AWS Secrets Manager → filesystem.
- * Each secret is generated with crypto.randomBytes(32) when created (or 'shiftlift' for JWT_ISSUER/JWT_AUDIENCE).
+ * Each secret is generated with crypto.randomBytes(32) when created (or 'shiftleftai' for JWT_ISSUER/JWT_AUDIENCE).
  * Call once after getEncryptionKey() in initDatabase().
  */
 export async function initAuthSecrets(): Promise<void> {
@@ -58,14 +58,14 @@ export async function initAuthSecrets(): Promise<void> {
         envKey: 'JWT_ISSUER',
         fileName: 'jwt_issuer.key',
         awsSecretIdSuffix: 'JWTIssuer',
-        defaultValueForNew: 'shiftlift'
+        defaultValueForNew: 'shiftleftai'
     })
 
     jwtAudience = await getOrCreateStoredSecret({
         envKey: 'JWT_AUDIENCE',
         fileName: 'jwt_audience.key',
         awsSecretIdSuffix: 'JWTAudience',
-        defaultValueForNew: 'shiftlift'
+        defaultValueForNew: 'shiftleftai'
     })
 }
 

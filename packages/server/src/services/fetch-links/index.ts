@@ -1,4 +1,4 @@
-import { webCrawl, xmlScrape, checkDenyList } from 'shiftlift-components'
+import { webCrawl, xmlScrape, checkDenyList } from 'shiftleftai-components'
 import { StatusCodes } from 'http-status-codes'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'

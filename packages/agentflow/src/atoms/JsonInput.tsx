@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FormControl, Popover } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import ReactJson from 'flowise-react-json-view'
+import ReactJson from 'shiftleft-react-json-view'
 
 import type { VariableItem } from './SelectVariable'
 import { SelectVariable } from './SelectVariable'

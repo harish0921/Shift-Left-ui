@@ -79,10 +79,7 @@ const deleteApiKey = async (req: Request, res: Response, next: NextFunction) => 
         if (typeof req.params === 'undefined' || !req.params.id) {
             throw new internalShiftLiftError(StatusCodes.PRECONDITION_FAILED, `Error: apikeyController.deleteApiKey - id not provided!`)
         }
-        if (!req.user?.activeWorkspaceId) {
-            throw new internalShiftLiftError(StatusCodes.PRECONDITION_FAILED, `Workspace ID is required`)
-        }
-        const apiResponse = await apikeyService.deleteApiKey(req.params.id, req.user?.activeWorkspaceId)
+        const apiResponse = await apikeyService.deleteApiKey(req.params.id)
         return res.json(apiResponse)
     } catch (error) {
         next(error)

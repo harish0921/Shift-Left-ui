@@ -577,7 +577,7 @@ export const additionalCallbacks = async (nodeData: INodeData, options: ICommonO
                     let lunaryFields = {
                         publicKey: lunaryPublicKey,
                         apiUrl: lunaryEndpoint ?? 'https://api.lunary.ai',
-                        runtime: 'flowise',
+                        runtime: 'shiftleft',
                         flowiseOptions: options
                     }
 
@@ -829,7 +829,7 @@ export class AnalyticHandler {
             lunary.init({
                 publicKey: lunaryPublicKey,
                 apiUrl: lunaryEndpoint,
-                runtime: 'flowise'
+                runtime: 'shiftleft'
             })
 
             this.handlers['lunary'] = { client: lunary }

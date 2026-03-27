@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { FullPageChat } from 'shiftlift-embed-react'
 
 // API
 import chatflowsApi from '@/api/chatflows'
@@ -26,6 +25,7 @@ const ChatbotFull = () => {
     const [chatbotTheme, setChatbotTheme] = useState({})
     const [isLoading, setLoading] = useState(true)
     const [chatbotOverrideConfig, setChatbotOverrideConfig] = useState({})
+    const [EmbedFullPageChat, setEmbedFullPageChat] = useState(null)
 
     const getSpecificChatflowFromPublicApi = useApi(chatflowsApi.getSpecificChatflowFromPublicEndpoint)
     const getSpecificChatflowApi = useApi(chatflowsApi.getSpecificChatflow)
@@ -73,6 +73,30 @@ const ChatbotFull = () => {
         setLoading(getSpecificChatflowFromPublicApi.loading || getSpecificChatflowApi.loading)
     }, [getSpecificChatflowFromPublicApi.loading, getSpecificChatflowApi.loading])
 
+    useEffect(() => {
+        let isMounted = true
+
+        const loadEmbedComponent = async () => {
+            try {
+                const packageName = 'shiftleftai-embed-react'
+                const pkg = await import(/* @vite-ignore */ packageName)
+                if (isMounted && pkg?.FullPageChat) {
+                    setEmbedFullPageChat(() => pkg.FullPageChat)
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setEmbedFullPageChat(null)
+                }
+            }
+        }
+
+        loadEmbedComponent()
+
+        return () => {
+            isMounted = false
+        }
+    }, [])
+
     return (
         <>
             {!isLoading ? (
@@ -102,12 +126,22 @@ const ChatbotFull = () => {
                             </Box>
                         </Box>
                     ) : (
-                        <FullPageChat
-                            chatflowid={chatflow.id}
-                            apiHost={baseURL}
-                            chatflowConfig={chatbotOverrideConfig}
-                            theme={{ chatWindow: chatbotTheme }}
-                        />
+                        <>
+                            {EmbedFullPageChat ? (
+                                <EmbedFullPageChat
+                                    chatflowid={chatflow.id}
+                                    apiHost={baseURL}
+                                    chatflowConfig={chatbotOverrideConfig}
+                                    theme={{ chatWindow: chatbotTheme }}
+                                />
+                            ) : (
+                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+                                    <Typography variant='body1' color='text.secondary'>
+                                        Chat preview is unavailable because `shiftleftai-embed-react` is not installed.
+                                    </Typography>
+                                </Box>
+                            )}
+                        </>
                     )}
                 </>
             ) : null}

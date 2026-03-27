@@ -1,11 +1,11 @@
 {
-    "name": "shiftlift-ui",
+    "name": "shiftleftai-ui",
     "version": "3.1.1",
     "license": "SEE LICENSE IN LICENSE.md",
-    "homepage": "https://shiftlift.ai",
+    "homepage": "https://shiftleftai.ai",
     "author": {
         "name": "HenryHeng",
-        "email": "support@shiftlift.ai"
+        "email": "support@shiftleftai.ai"
     },
     "dependencies": {
         "@codemirror/lang-javascript": "^6.2.1",
@@ -40,9 +40,9 @@
         "clsx": "^1.1.1",
         "dompurify": "^3.2.6",
         "dotenv": "^16.0.0",
-        "shiftlift-embed": "npm:flowise-embed@latest",
-        "shiftlift-embed-react": "npm:flowise-embed-react@latest",
-        "flowise-react-json-view": "^1.2.0",
+        "shiftleftai-embed": "npm:shiftleft-embed@latest",
+        "shiftleftai-embed-react": "npm:shiftleft-embed-react@latest",
+        "shiftleft-react-json-view": "^1.2.0",
         "formik": "^2.2.6",
         "framer-motion": "^4.1.13",
         "history": "^5.0.0",

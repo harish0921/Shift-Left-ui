@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
                         reactflow: 'ReactFlow'
                     },
                     assetFileNames: (assetInfo) => {
-                        if (assetInfo.name === 'style.css') return 'flowise.css'
+                        if (assetInfo.name === 'style.css') return 'shiftleft.css'
                         return assetInfo.name || 'asset'
                     }
                 }

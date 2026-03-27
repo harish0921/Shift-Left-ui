@@ -792,7 +792,7 @@ formData.append("openAIApiKey[openAIEmbeddings_0]", "sk-my-openai-2nd-key")`
                                                     <a
                                                         rel='noreferrer'
                                                         target='_blank'
-                                                        href='https://docs.shiftlift.ai/using-flowise/prediction#configuration-override'
+                                                        href='https://docs.shiftleftai.ai/using-shiftleft/prediction#configuration-override'
                                                     >
                                                         here
                                                     </a>{' '}
@@ -932,7 +932,7 @@ formData.append("openAIApiKey[openAIEmbeddings_0]", "sk-my-openai-2nd-key")`
                                 {getIsChatflowStreamingApi.data?.isStreaming && (
                                     <p>
                                         Read&nbsp;
-                                        <a rel='noreferrer' target='_blank' href='https://docs.shiftlift.ai/using-flowise/streaming'>
+                                        <a rel='noreferrer' target='_blank' href='https://docs.shiftleftai.ai/using-shiftleft/streaming'>
                                             here
                                         </a>
                                         &nbsp;on how to stream response back to application

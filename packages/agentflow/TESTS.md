@@ -1,4 +1,4 @@
-# @flowiseai/agentflow — Testing Guide
+# @shiftleftai/agentflow — Testing Guide
 
 ## Running Tests
 

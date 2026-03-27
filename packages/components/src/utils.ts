@@ -18,7 +18,7 @@ import { GetSecretValueCommand, SecretsManagerClient, SecretsManagerClientConfig
 import { customGet } from '../nodes/sequentialagents/commonUtils'
 import { TextSplitter } from '@langchain/textsplitters'
 import { DocumentLoader } from '@langchain/classic/document_loaders/base'
-import { NodeVM } from '@shiftlift/nodevm'
+import { NodeVM } from '@shiftleftai/nodevm'
 import { Sandbox } from '@e2b/code-interpreter'
 import { secureFetch, checkDenyList, secureAxiosRequest } from './httpSecurity'
 import JSON5 from 'json5'
@@ -49,7 +49,7 @@ if (USE_AWS_SECRETS_MANAGER) {
 }
 
 /*
- * List of dependencies allowed to be import in @shiftlift/nodevm
+ * List of dependencies allowed to be import in @shiftleftai/nodevm
  */
 export const availableDependencies = [
     '@aws-sdk/client-bedrock-runtime',
@@ -535,7 +535,7 @@ const getEncryptionKeyFilePath = (): string => {
         path.join(__dirname, '..', '..', '..', '..', 'server', 'encryption.key'),
         path.join(__dirname, '..', '..', '..', '..', '..', 'encryption.key'),
         path.join(__dirname, '..', '..', '..', '..', '..', 'server', 'encryption.key'),
-        path.join(getUserHome(), '.flowise', 'encryption.key')
+        path.join(getUserHome(), '.shiftleft', 'encryption.key')
     ]
     for (const checkPath of checkPaths) {
         if (fs.existsSync(checkPath)) {

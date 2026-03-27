@@ -39,10 +39,9 @@ import {
     IconCheck,
     IconPaperclip,
     IconSparkles,
-    IconVolume
+    IconVolume,
+    IconUser
 } from '@tabler/icons-react'
-import robotPNG from '@/assets/images/robot.png'
-import userPNG from '@/assets/images/account.png'
 import multiagent_supervisorPNG from '@/assets/images/multiagent_supervisor.png'
 import multiagent_workerPNG from '@/assets/images/multiagent_worker.png'
 import audioUploadSVG from '@/assets/images/wave-sound.jpg'
@@ -1536,6 +1535,11 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
     }, [isDialog, inputRef])
 
     useEffect(() => {
+        if (open && !chatflowid) {
+            setIsConfigLoading(false)
+            return
+        }
+
         if (open && chatflowid) {
             // API request
             getChatmessageApi.request(chatflowid)
@@ -2323,6 +2327,26 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
         }
     }
 
+    if (!chatflowid) {
+        return (
+            <Box
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 3,
+                    textAlign: 'center'
+                }}
+            >
+                <Typography variant='body2' color='text.secondary'>
+                    Save this agent first, then open Chat to test it.
+                </Typography>
+            </Box>
+        )
+    }
+
     if (isConfigLoading) {
         return (
             <Box
@@ -2491,9 +2515,39 @@ const ChatMessage = ({ open, chatflowid, isAgentCanvas, isDialog, previews, setP
                                 >
                                     {/* Display the correct icon depending on the message type */}
                                     {message.type === 'apiMessage' || message.type === 'leadCaptureMessage' ? (
-                                        <img src={robotPNG} alt='AI' width='30' height='30' className='boticon' />
+                                        <Box
+                                            className='boticon'
+                                            sx={{
+                                                width: 30,
+                                                height: 30,
+                                                borderRadius: '50%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: customization.isDarkMode ? '#32353b' : '#e3f2fd',
+                                                color: customization.isDarkMode ? '#90caf9' : '#1e88e5',
+                                                flexShrink: 0
+                                            }}
+                                        >
+                                            <IconSparkles size={16} />
+                                        </Box>
                                     ) : (
-                                        <img src={userPNG} alt='Me' width='30' height='30' className='usericon' />
+                                        <Box
+                                            className='usericon'
+                                            sx={{
+                                                width: 30,
+                                                height: 30,
+                                                borderRadius: '50%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: customization.isDarkMode ? '#2d2d2d' : '#f5f5f5',
+                                                color: customization.isDarkMode ? '#e0e0e0' : '#616161',
+                                                flexShrink: 0
+                                            }}
+                                        >
+                                            <IconUser size={16} />
+                                        </Box>
                                     )}
                                     <div
                                         style={{

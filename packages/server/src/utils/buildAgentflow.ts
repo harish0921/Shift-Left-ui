@@ -12,7 +12,7 @@ import {
     IServerSideEventStreamer,
     convertChatHistoryToText,
     generateFollowUpPrompts
-} from 'shiftlift-components'
+} from 'shiftleftai-components'
 import {
     IncomingAgentflowInput,
     INodeData,

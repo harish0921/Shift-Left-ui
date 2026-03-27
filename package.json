@@ -1,11 +1,11 @@
 {
-    "name": "shiftlift",
+    "name": "shiftleftai",
     "version": "3.1.1",
     "private": true,
-    "homepage": "https://shiftlift.ai",
+    "homepage": "https://shiftleftai.ai",
     "workspaces": [
         "packages/*",
-        "flowise",
+        "shiftleft",
         "ui",
         "components",
         "api-documentation"

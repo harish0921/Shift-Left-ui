@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { internalShiftLiftError } from '../../errors/internalShiftLiftError'
 import { getErrorMessage } from '../../errors/utils'
-import { getVoices } from 'shiftlift-components'
+import { getVoices } from 'shiftleftai-components'
 import { databaseEntities } from '../../utils'
 
 export enum TextToSpeechProvider {

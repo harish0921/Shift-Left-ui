@@ -254,34 +254,34 @@ describe('validateMimeTypeAndExtensionMatch', () => {
 
 describe('validateVectorStorePath', () => {
     const userHome = getUserHome()
-    const defaultFlowisePath = path.join(userHome, '.flowise')
+    const defaultFlowisePath = path.join(userHome, '.shiftleft')
 
     describe('valid paths', () => {
         it('should return default path when no path is provided', () => {
             const result = validateVectorStorePath(undefined)
-            expect(result).toBe(path.join(userHome, '.flowise', 'vectorstore'))
+            expect(result).toBe(path.join(userHome, '.shiftleft', 'vectorstore'))
         })
 
         it('should return default path when empty string is provided', () => {
             const result = validateVectorStorePath('')
-            expect(result).toBe(path.join(userHome, '.flowise', 'vectorstore'))
+            expect(result).toBe(path.join(userHome, '.shiftleft', 'vectorstore'))
         })
 
         it('should return default path when whitespace string is provided', () => {
             const result = validateVectorStorePath('   ')
-            expect(result).toBe(path.join(userHome, '.flowise', 'vectorstore'))
+            expect(result).toBe(path.join(userHome, '.shiftleft', 'vectorstore'))
         })
 
-        it('should accept relative path within .flowise directory', () => {
+        it('should accept relative path within .shiftleft directory', () => {
             const relativePath = 'vectorstore/faiss'
             const result = validateVectorStorePath(relativePath)
 
-            // Should resolve to absolute path within .flowise
+            // Should resolve to absolute path within .shiftleft
             expect(path.isAbsolute(result)).toBe(true)
-            expect(result).toContain('.flowise')
+            expect(result).toContain('.shiftleft')
         })
 
-        it('should accept absolute path within .flowise directory', () => {
+        it('should accept absolute path within .shiftleft directory', () => {
             const absolutePath = path.join(defaultFlowisePath, 'vectorstore', 'test')
             const result = validateVectorStorePath(absolutePath)
 
@@ -368,7 +368,7 @@ describe('validateVectorStorePath', () => {
             }
         })
 
-        it('should reject path to user home root (outside .flowise)', () => {
+        it('should reject path to user home root (outside .shiftleft)', () => {
             const homeRootPath = path.join(userHome, 'Documents', 'vectorstore')
 
             expect(() => {
@@ -405,7 +405,7 @@ describe('validateVectorStorePath', () => {
             expect(result).toBe(testPath)
         })
 
-        it('should allow path within .flowise even when BLOB_STORAGE_PATH is configured', () => {
+        it('should allow path within .shiftleft even when BLOB_STORAGE_PATH is configured', () => {
             process.env.BLOB_STORAGE_PATH = path.join(userHome, 'custom-storage')
 
             const flowisePath = path.join(defaultFlowisePath, 'vectorstore')
@@ -462,7 +462,7 @@ describe('validateVectorStorePath', () => {
 
         it('should return default path when undefined', () => {
             const userHome = getUserHome()
-            expect(validateVectorStorePath(undefined)).toBe(path.join(userHome, '.flowise', 'vectorstore'))
+            expect(validateVectorStorePath(undefined)).toBe(path.join(userHome, '.shiftleft', 'vectorstore'))
         })
     })
 })

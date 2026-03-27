@@ -2,7 +2,7 @@ import { JwtFromRequestFunction, Strategy as JwtStrategy, VerifiedCallback } fro
 import { decryptToken } from '../../utils/tempTokenUtils'
 import { Strategy } from 'passport'
 import { Request } from 'express'
-import { ICommonObject } from 'shiftlift-components'
+import { ICommonObject } from 'shiftleftai-components'
 
 const _cookieExtractor = (req: any) => {
     let jwt = null

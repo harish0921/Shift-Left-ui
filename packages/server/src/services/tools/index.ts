@@ -31,13 +31,10 @@ const createTool = async (requestBody: any, orgId: string): Promise<any> => {
     }
 }
 
-const deleteTool = async (toolId: string, workspaceId: string): Promise<any> => {
+const deleteTool = async (toolId: string, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Tool).delete({
-            id: toolId,
-            workspaceId: workspaceId
-        })
+        const dbResponse = await appServer.AppDataSource.getRepository(Tool).delete(workspaceId ? { id: toolId, workspaceId } : { id: toolId })
         return dbResponse
     } catch (error) {
         throw new internalShiftLiftError(StatusCodes.INTERNAL_SERVER_ERROR, `Error: toolsService.deleteTool - ${getErrorMessage(error)}`)
@@ -66,12 +63,11 @@ const getAllTools = async (workspaceId?: string, page: number = -1, limit: numbe
     }
 }
 
-const getToolById = async (toolId: string, workspaceId: string): Promise<any> => {
+const getToolById = async (toolId: string, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Tool).findOneBy({
-            id: toolId,
-            workspaceId: workspaceId
+        const dbResponse = await appServer.AppDataSource.getRepository(Tool).findOne({
+            where: { id: toolId, ...(workspaceId ? { workspaceId } : {}) }
         })
         if (!dbResponse) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Tool ${toolId} not found`)
@@ -82,12 +78,11 @@ const getToolById = async (toolId: string, workspaceId: string): Promise<any> =>
     }
 }
 
-const updateTool = async (toolId: string, toolBody: any, workspaceId: string): Promise<any> => {
+const updateTool = async (toolId: string, toolBody: any, workspaceId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const tool = await appServer.AppDataSource.getRepository(Tool).findOneBy({
-            id: toolId,
-            workspaceId: workspaceId
+        const tool = await appServer.AppDataSource.getRepository(Tool).findOne({
+            where: { id: toolId, ...(workspaceId ? { workspaceId } : {}) }
         })
         if (!tool) {
             throw new internalShiftLiftError(StatusCodes.NOT_FOUND, `Tool ${toolId} not found`)
@@ -95,7 +90,7 @@ const updateTool = async (toolId: string, toolBody: any, workspaceId: string): P
         const updateTool = new Tool()
         Object.assign(updateTool, toolBody)
         appServer.AppDataSource.getRepository(Tool).merge(tool, updateTool)
-        tool.workspaceId = workspaceId // defense-in-depth: never trust client-supplied workspaceId
+        if (workspaceId) tool.workspaceId = workspaceId // defense-in-depth: never trust client-supplied workspaceId
         const dbResponse = await appServer.AppDataSource.getRepository(Tool).save(tool)
         return dbResponse
     } catch (error) {
